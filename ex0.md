@@ -24,7 +24,8 @@
   - 仮想環境の作成
   - 必要なライブラリのインストール
   - 
-- app.py の作成と streamlit の設定
+- app.py の作成と chainlit を使ったチャットUIの設定
+  - Optional : [Azure Acrive Directory による認証](https://docs.chainlit.io/authentication/oauth#azure-active-directory)
 
 
 <br>

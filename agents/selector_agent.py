@@ -2,12 +2,13 @@ from autogen_core.models import ChatCompletionClient
 from autogen_agentchat.teams import BaseGroupChat, SelectorGroupChat
 from autogen_agentchat.conditions import TextMentionTermination, MaxMessageTermination
 
-from .contract_lookup_agent import get_planner_agent
-from .product_search_agent import get_hotel_search_agent
-from .summary_agent import get_transport_cost_agent
-from .voice_agent import get_summary_agent
+from .contract_lookup_agent import contract_lookup_agent
+from .product_search_agent import product_search_agent
+from .summary_agent import summary_agent
+from .planner_agent import planner_agent
 
 # https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/selector-group-chat.html#selector-prompt
+
 selector_prompt = """あなたのタスクは、会話の状況に応じて次のタスクを実行する role を選択することです。
 ## 次の話者の選択ルール
 
@@ -35,10 +36,10 @@ selector_prompt = """あなたのタスクは、会話の状況に応じて次�
 
 
 def get_team(model_client: ChatCompletionClient) -> BaseGroupChat:
-    planner_agent = get_planner_agent(model_client)
-    hotel_search_agent = get_hotel_search_agent(model_client)
-    transport_cost_agent = get_transport_cost_agent(model_client)
-    summary_agent = get_summary_agent(model_client)
+    planner_agent = planner_agent(model_client)
+    product_search_agent = product_search_agent(model_client)
+    contract_lookup_agent = contract_lookup_agent(model_client)
+    summary_agent = summary_agent(model_client)
 
     termination_condition = TextMentionTermination("TERMINATE") | MaxMessageTermination(
         12
@@ -47,8 +48,8 @@ def get_team(model_client: ChatCompletionClient) -> BaseGroupChat:
     team = SelectorGroupChat(
         [
             planner_agent,
-            hotel_search_agent,
-            transport_cost_agent,
+            product_search_agent,
+            contract_lookup_agent,
             summary_agent,
         ],
         model_client=model_client,

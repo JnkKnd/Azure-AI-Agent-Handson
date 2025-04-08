@@ -1,0 +1,12 @@
+azure-identity
+azure-ai-projects
+azure-search-documents
+
+openai
+
+autogen-core
+autogen-agentchat
+
+
+python-dotenv
+chainlit
