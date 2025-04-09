@@ -4,7 +4,7 @@ import datetime
 from dotenv import load_dotenv
 from typing import Any, Callable, Set
 from azure.identity import DefaultAzureCredential
-from azure.core import AzureKeyCredential
+from azure.core.credentials import AzureKeyCredential
 from azure.ai.projects import AIProjectClient
 from azure.search.documents import SearchClient
 from azure.ai.projects.models import FunctionTool, ToolSet, BingGroundingTool, MessageTextContent
@@ -78,7 +78,7 @@ toolset.add(functions)
 toolset.add(bing)
 
 agent = project_client.agents.create_agent(
-    model="gpt-4o-mini",
+    model="gpt-4o",
     name="Product Search Agent",
     instructions="""
 あなたは、丁寧なアシスタントです。あなたは以下の業務を遂行します。
@@ -130,5 +130,5 @@ if response is None:
     response = "エージェントからの応答が得られませんでした。"
 print(response)
 
-# project_client.agents.delete_thread(thread_id=thread.id)
-# project_client.agents.delete_agent(agent_id=agent.id)
+project_client.agents.delete_thread(thread_id=thread.id)
+project_client.agents.delete_agent(agent_id=agent.id)

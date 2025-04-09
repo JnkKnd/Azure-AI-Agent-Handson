@@ -14,6 +14,7 @@
 - リソースの作成
   - Azure AI Foundry Hub
   - Azure AI Foundry Project
+    - gpt-4o-2024-08-06 のデプロイ
   - Azure AI Search (S0 or Basic)
   - Bing Grounding Tool 作成
   - Logic Apps 作成

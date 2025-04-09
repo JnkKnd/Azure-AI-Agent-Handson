@@ -95,7 +95,7 @@ toolset = ToolSet()
 toolset.add(functions)
 
 agent = project_client.agents.create_agent(
-    model="gpt-4o-mini",
+    model="gpt-4o",
     name="Contract Lookup Agent",
     instructions="""
 あなたは、丁寧なアシスタントです。あなたは以下の業務を遂行します。
