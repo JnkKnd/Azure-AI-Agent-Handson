@@ -7,6 +7,9 @@
 
 ## 演習 2-1 Logic Apps の設定
 - Logic Apps リソース作成
+- Logic Apps の設定 \
+![alt text](images/image24.png)
+
 - メールの送信設定
 
 ## 演習 2-2 Azure Functions の呼び出し
@@ -18,9 +21,14 @@
 - Azure Functions 追加
 
 ## 演習 2-4 動作の確認
-- ターミナルでの確認
+- プロンプト例
+```
+- ユーザー ID 1234 です。保険の加入状況を教えて。
+- 担当者に保険の見直しをお願いしたい
+```
+- ターミナルでの確認 \
 ![alt text](images/image22.png)
-- エージェントプレイグラウンドでの確認
+- エージェントプレイグラウンドでの確認 \
 ![alt text](images/image23.png)
 
 <br>
