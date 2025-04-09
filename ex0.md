@@ -17,14 +17,16 @@
   - Azure AI Search (S0 or Basic)
   - Bing Grounding Tool 作成
   - Logic Apps 作成
-  - Cosmos DB 作成
-  - Azure Functions 作成
+  - (Optional)　Cosmos DB 作成
+  - (Optional)　Azure Functions 作成
+  - (Optional)　Bicepファイルによるリソース作成
 - 開発環境の確認
   - VS Code での python 環境の確認
   - 仮想環境の作成
   - 必要なライブラリのインストール
-  - 
-- app.py の作成と streamlit の設定
+  - (Optional) Github Codespaces の利用
+- app.py の作成と chainlit を使ったチャットUIの設定
+  - Optional : [Azure Acrive Directory による認証](https://docs.chainlit.io/authentication/oauth#azure-active-directory)
 
 
 <br>
