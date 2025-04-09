@@ -6,9 +6,9 @@ azure-ai-inference
 openai
 
 autogen
-autogen-core
-autogen-agentchat
-autogen-ext[openai]
+autogen-core==0.4.7
+autogen-agentchat==0.4.7
+autogen-ext[openai]==0.4.7
 
 
 python-dotenv
