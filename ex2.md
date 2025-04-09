@@ -11,12 +11,17 @@
 
 ## 演習 2-2 Azure Functions の呼び出し
 - Azure Functions の API 仕様の説明
+- 
 
 ## 演習 2-3 関数の定義
 - Logic Apps 追加
 - Azure Functions 追加
 
 ## 演習 2-4 動作の確認
+- ターミナルでの確認
+![alt text](images/image22.png)
+- エージェントプレイグラウンドでの確認
+![alt text](images/image23.png)
 
 <br>
 

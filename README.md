@@ -13,9 +13,11 @@
 - ツールの登録と呼び出し
 - マルチエージェントのデザインパターン
 - AutoGen による実装
-- 
+- Chainlit による UI 表示
 
 ## ハンズオンのシナリオとゴール
+- 各種 Azure PaaS を用いたエージェント実装
+- Azure AI Agent Service と AutoGen の橋渡し
 - 保険業界におけるカスタマーサポートを行うマルチエージェントシステム
 ![alt text](images/image01.png)
 

@@ -1,6 +1,4 @@
-"""
-実装してみてください。
-"""
+# 実装してみてください。
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 

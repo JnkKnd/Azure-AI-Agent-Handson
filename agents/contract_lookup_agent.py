@@ -8,6 +8,7 @@ from autogen_core.models import ChatCompletionClient
 
 
 def contract_lookup(user_id: int)->str:
+    # 便宜上一旦ハードコードしています
     """
     ユーザーIDに基づいてユーザー情報を JSON 文字列で返す
 
@@ -22,21 +23,21 @@ def contract_lookup(user_id: int)->str:
             "name": "佐藤太郎",
             "tel": "090-0000-0000",
             "email": "sato@example.com",
-            "staff_email": "junkokondo@microsoft.com",
+            "staff_email": "xxxxxxxx@microsoft.com",
             "plan": "安心保障プラン",
         },
         5679: {
             "name": "鈴木花子",
             "tel": "080-1111-1111",
             "email": "suzuki@example.com",
-            "staff_email": "junkokondo@microsoft.com",
+            "staff_email": "xxxxxxxx@microsoft.com",
             "plan": "学資サポートプラン",
         },
         4321: {
             "name": "田中次郎",
             "tel": "090-2222-2222",
             "email": "tanaka@example.com",
-            "staff_email": "junkokondo@microsoft.com",
+            "staff_email": "xxxxxxxx@microsoft.com",
             "plan": "シニアライフプラン",
         }
     }
@@ -71,14 +72,14 @@ def send_email(customer:str, staff_email:str, inquiry: str)->str:
 
     try:
         response = requests.post(endpoint_url, headers=headers, data=json.dumps(payload))
-        response.raise_for_status()  # HTTPエラーを検出
+        response.raise_for_status() 
         status = json.dumps({"status": "メールで通知が完了しました"})
-        return status # 成功時はJSONレスポンスを返す
+        return status
     except requests.exceptions.RequestException as err:
         print(f"エラー: {err}")
         return json.dumps({"status": "メールで通知に失敗しました"})
 
-
+# tool 登録方法の変更
 user_functions: Set[Callable[..., Any]] = {
     contract_lookup,
     send_email
@@ -91,9 +92,9 @@ toolset.add(functions)
 def contract_lookup_agent(model_client: ChatCompletionClient) -> AssistantAgent:
     agent = AssistantAgent(
         name="ContractLookupAgent",
-        description="顧客のデータを確認し、保険の契約状況と担当者を確認するエージェント。さらにユーザーからリクエストがあったばあい、ユーザーの担当者に連絡をする。",
+        description="顧客のデータを確認し、保険の契約状況と担当者を確認するエージェント。さらにユーザーからリクエストがあった場合、ユーザーの担当者に連絡をする。",
         model_client=model_client,
-        toolset = toolset,
+        tools = toolset,
         system_message="""丁寧に返してください""",
     )
     return agent

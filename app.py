@@ -5,18 +5,16 @@ import logging
 import chainlit as cl
 from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
-from typing import Any, Callable, Set, Dict, List, Optional
 from azure.ai.projects import AIProjectClient
-from azure.ai.projects.models import (
-    FunctionTool,
-    ToolSet,
-    CodeInterpreterTool,
-    AzureAISearchTool,
-    BingGroundingTool,
-    MessageTextContent,
-)
-from azure.search.documents import SearchClient
+from azure.ai.projects.models import MessageTextContent
 from openai import AzureOpenAI
+from autogen import Agent, AssistantAgent
+
+from agents.contract_lookup_agent import contract_lookup_agent
+#from agents.product_search_agent import product_search_agent
+#from agents.summary_agent import summary_agent
+#from agents.planner_agent import planner_agent
+#from agents.selector_agent import get_team
 
 core_logger = logging.getLogger("autogen_core")
 core_logger.setLevel(logging.WARNING)
@@ -32,19 +30,8 @@ AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
 INDEX_NAME = os.getenv("INDEX_NAME")
 AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
 
-
-if not PROJECT_CONNECTION_STRING:
-    raise ValueError("'.env' に PROJECT_CONNECTION_STRING が設定されていません。")
-
 project_client = AIProjectClient.from_connection_string(
     credential=DefaultAzureCredential(), conn_str=PROJECT_CONNECTION_STRING
-)
-if not PROJECT_CONNECTION_STRING:
-    raise ValueError("'.env' に PROJECT_CONNECTION_STRING が設定されていません。")
-
-
-search_client = SearchClient(
-    endpoint=AI_SEARCH_ENDPOINT, index_name=INDEX_NAME, credential=AI_SEARCH_CRED
 )
 
 aoai_client = AzureOpenAI(
@@ -53,30 +40,42 @@ aoai_client = AzureOpenAI(
     api_version="2025-01-01-preview",
 )
 
+contract_lookup_agent = contract_lookup_agent(aoai_client)
 
-# UI 部分を担わせる
+"""
+# Agent の共有 Wrapperクラス
+class ChainlitLoggableAgent(AssistantAgent):
+    async def send(
+        self, message, recipient, request_reply: bool = None, silent: bool = False
+    ):
+        # Chainlit に中間出力を表示
+        await cl.Message(
+            content=f"【{self.name}】{message} → {recipient.name}", author=self.name
+        ).send()
+        # 元の送信処理を呼び出す
+        return await super().send(
+            message, recipient, request_reply=request_reply, silent=silent
+        )
+
+
+# UI
+@cl.on_chat_start
+async def initialize_team():
+    team = get_team(aoai_client)
+
+    await cl.Message(content="エージェントチームを起動しました。タスクを入力してください。").send()
+    # ユーザーメッセージを起点に各エージェントで対話を進行させる処理を書く
+    # 例: チャット初期入力を team に渡すなど
+    user_input = await cl.AskUserMessage(content="タスクを入力してください", timeout=60)
+    # チーム全体に対して対話を開始、または最初のエージェント（PlannerAgent）にメッセージを送る
+    await team.initiate(user_input["content"])
+
 @cl.on_message
 async def main(user_message: str):
     agent = project_client.agents.create_agent(
         model="gpt-4o-mini",
         name="Handson Chat Agent",
-        instructions="""
-        あなたは、丁寧なアシスタントです。あなたは以下の業務を遂行します。
-        - 現在の時刻を回答します
-        - 天気の情報を提供します
-        - 保険の契約をしているユーザーの情報について回答します
-        - 保険の商品について検索して回答します
-        - お客様から担当者にお問い合わせメールを通知します
-
-        # 回答時のルール
-        - 関数を呼び出した場合、回答の最後に改行をいれたうえで Called Function : "関数名" と表記してください
-
-        # 制約事項
-        - ユーザーからのメッセージは日本語で入力されます
-        - ユーザーからのメッセージから忠実に情報を抽出し、それに基づいて応答を生成します。
-        - ユーザーからのメッセージに勝手に情報を追加したり、不要な改行文字 \n を追加してはいけません
-
-        """,
+        instructions="",
         headers={"x-ms-enable-preview": "true"},
     )
     thread = project_client.agents.create_thread()
@@ -133,9 +132,10 @@ def end_chat():
         project_client.agents.delete_thread(thread_id=thread_id)
     if agent_id:
         project_client.agents.delete_agent(agent_id=agent_id)
-    print(f"Deleted agent, agent ID: {agent_id}, thread ID: {thread_id}")
+        print(f"Deleted agent, agent ID: {agent_id}, thread ID: {thread_id}")
 
 
 if __name__ == "__main__":
     cl.run()
 
+"""

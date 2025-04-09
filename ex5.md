@@ -7,7 +7,6 @@
 
 ### UI について
 - [すぐに使えるマルチエージェント時代の UI を考えるメモ](https://qiita.com/nohanaga/items/b346870131e82832eb1f)
-- Chainlit と LangChain は相性が良い
 - [Chainlit と MCP サーバーについて](https://docs.chainlit.io/advanced-features/mcp)
 
 ## 参考リンク
