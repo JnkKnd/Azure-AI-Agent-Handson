@@ -1,12 +1,14 @@
 azure-identity
 azure-ai-projects
 azure-search-documents
+azure-ai-inference
 
 openai
 
 autogen
 autogen-core
 autogen-agentchat
+autogen-ext[openai]
 
 
 python-dotenv

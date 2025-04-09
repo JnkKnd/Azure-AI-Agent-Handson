@@ -41,9 +41,7 @@ def get_team(model_client: ChatCompletionClient) -> BaseGroupChat:
     contract_lookup_agent = contract_lookup_agent(model_client)
     summary_agent = summary_agent(model_client)
 
-    termination_condition = TextMentionTermination("TERMINATE") | MaxMessageTermination(
-        12
-    )
+    termination_condition = TextMentionTermination("TERMINATE") | MaxMessageTermination(10)
 
     team = SelectorGroupChat(
         [
