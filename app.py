@@ -7,8 +7,10 @@ from dotenv import load_dotenv
 from azure.core.credentials import AzureKeyCredential
 from autogen_ext.models.azure import AzureAIChatCompletionClient
 from autogen_agentchat.teams import BaseGroupChat, SelectorGroupChat
+from autogen_ext.models.openai import AzureOpenAIChatCompletionClient
 from autogen_agentchat.conditions import TextMentionTermination, MaxMessageTermination
 from autogen_agentchat.ui import Console
+from autogen_agentchat.base import TaskResult
 
 from agents.contract_lookup_agent import contract_lookup_agent
 from agents.product_search_agent import product_search_agent
@@ -22,27 +24,8 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 
-service_name = "autogen"
-
-# OTLPエクスポーターの設定 (gRPC経由で送信)
-otlp_exporter = OTLPSpanExporter(
-    endpoint="http://localhost:4317",  # JaegerのgRPCエンドポイント
-)
-tracer_provider = TracerProvider(resource=Resource({"service.name": service_name}))
-
-# トレーサープロバイダーの設定
-trace.set_tracer_provider(tracer_provider)
-
-# バッチスパンプロセッサーを設定
-span_processor = BatchSpanProcessor(otlp_exporter)
-tracer_provider.add_span_processor(span_processor)
-
-# トレーサーを取得
-tracer = tracer_provider.get_tracer(service_name)
-OpenAIInstrumentor().instrument()
-
-core_logger = logging.getLogger("autogen_core")
-core_logger.setLevel(logging.WARNING)
+logging.getLogger("autogen_agentchat").setLevel(logging.ERROR)
+logging.getLogger("autogen_ext.models.openai").setLevel(logging.ERROR)
 
 # 環境変数の読み込み
 load_dotenv()
@@ -54,21 +37,14 @@ AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
 INDEX_NAME = os.getenv("INDEX_NAME")
 AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
 
-aoai_client = AzureAIChatCompletionClient(
-    endpoint=AZURE_OPENAI_ENDPOINT,
-    credential=AzureKeyCredential(AZURE_OPENAI_KEY),
+aoai_client = AzureOpenAIChatCompletionClient(
+    azure_deployment=DEPLOYMENT_NAME,
+    model="gpt-4o",
+    api_key=AZURE_OPENAI_KEY,
     api_version="2025-01-01-preview",
-    model_info={
-        "json_output": False,
-        "function_calling": True,
-        "vision": False,
-        "family": "gpt-4o",
-        "structured_output": False,
-        "deployment_name": DEPLOYMENT_NAME,
-    },
+    azure_endpoint=AZURE_OPENAI_ENDPOINT,
 )
 
-# https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/selector-group-chat.html#selector-prompt
 
 selector_prompt = """あなたのタスクは、会話の状況に応じて次のタスクを実行する role を選択することです。
 ## 次の話者の選択ルール
@@ -95,33 +71,36 @@ selector_prompt = """あなたのタスクは、会話の状況に応じて次�
 {history}
 """
 
-with tracer.start_as_current_span(
-    "SelectorGroupChat"
-) as rollspan:  # ルートスパンを作成
 
-    # SelectorGroupChat:共有コンテキストに基づいて次のスピーカーを選択
-    planner_agent = planner_agent(aoai_client)
-    product_search_agent = product_search_agent(aoai_client)
-    contract_lookup_agent = contract_lookup_agent(aoai_client)
-    summary_agent = summary_agent(aoai_client)
+# SelectorGroupChat:共有コンテキストに基づいて次のスピーカーを選択
+planner = planner_agent(aoai_client)
+product_search = product_search_agent(aoai_client)
+contract_lookup = contract_lookup_agent(aoai_client)
+summary = summary_agent(aoai_client)
 
-    termination_condition = TextMentionTermination("TERMINATE") | MaxMessageTermination(10)
+termination_condition = TextMentionTermination("TERMINATE") | MaxMessageTermination(10)
 
-    team = SelectorGroupChat(
-        [
-            planner_agent,
-            product_search_agent,
-            contract_lookup_agent,
-            summary_agent,
-        ],
-        model_client=aoai_client,
-        termination_condition=termination_condition,
-        selector_prompt=selector_prompt,
-        allow_repeated_speaker=False,
-    )
+team = SelectorGroupChat(
+    [
+        planner,
+        product_search,
+        contract_lookup,
+        summary,
+    ],
+    model_client=aoai_client,
+    termination_condition=termination_condition,
+    selector_prompt=selector_prompt,
+    allow_repeated_speaker=False,
+)
 
-    # task = "2025年おすすめの旅行先を推薦してください。"
+# task = "2025年おすすめの旅行先を推薦してください。"
+
+async def main() -> None:
     task = input("タスクを入力してください： ")
+    # task = user_message
 
-    # Run the async function
-    asyncio.run(Console(team.run_stream(task=task)))
+    # Run the async generator and collect the results
+    stream = team.run_stream(task=task)
+    await Console(stream)
+
+asyncio.run(main())
