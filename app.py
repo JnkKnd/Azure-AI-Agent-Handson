@@ -11,21 +11,23 @@ from autogen_ext.models.openai import AzureOpenAIChatCompletionClient
 from autogen_agentchat.conditions import TextMentionTermination, MaxMessageTermination
 from autogen_agentchat.ui import Console
 from autogen_agentchat.base import TaskResult
+from autogen_core import TRACE_LOGGER_NAME, EVENT_LOGGER_NAME
 
 from agents.contract_lookup_agent import contract_lookup_agent
 from agents.product_search_agent import product_search_agent
 from agents.summary_agent import summary_agent
 from agents.planner_agent import planner_agent
 
-from opentelemetry import trace
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-from opentelemetry.instrumentation.openai import OpenAIInstrumentor
+# ベースのログ設定をWARNINGに設定（全体のデフォルト）
+logging.basicConfig(level=logging.ERROR)
 
-logging.getLogger("autogen_agentchat").setLevel(logging.ERROR)
-logging.getLogger("autogen_ext.models.openai").setLevel(logging.ERROR)
+# TRACE_LOGGER_NAMEのログレベルをERRORに設定
+trace_logger = logging.getLogger(TRACE_LOGGER_NAME)
+trace_logger.setLevel(logging.ERROR)
+
+# EVENT_LOGGER_NAMEのログレベルをERRORに設定
+event_logger = logging.getLogger(EVENT_LOGGER_NAME)
+event_logger.setLevel(logging.ERROR)
 
 # 環境変数の読み込み
 load_dotenv()
@@ -93,7 +95,20 @@ team = SelectorGroupChat(
     allow_repeated_speaker=False,
 )
 
+
 # task = "2025年おすすめの旅行先を推薦してください。"
+async def clean_console(stream):
+    async for message in stream:
+        if hasattr(message, "source") and hasattr(message, "content"):
+            if message.source in [
+                "SummaryAgent",
+                "ProductSearchAgent",
+                "ContractLookupAgent",
+                "PlannerAgent",
+            ]:
+                print(f"\n---------- {message.source} ----------")
+                print(message.content)
+
 
 async def main() -> None:
     task = input("タスクを入力してください： ")
@@ -101,6 +116,6 @@ async def main() -> None:
 
     # Run the async generator and collect the results
     stream = team.run_stream(task=task)
-    await Console(stream)
+    await clean_console(stream)
 
 asyncio.run(main())
