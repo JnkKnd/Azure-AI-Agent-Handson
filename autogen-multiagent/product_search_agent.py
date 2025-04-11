@@ -1,14 +1,9 @@
 import json
 import os
-import datetime
 from dotenv import load_dotenv
-from typing import Any, Callable, Set, Dict, List, Optional
-from azure.identity import DefaultAzureCredential
 from azure.core.credentials import AzureKeyCredential
-from azure.ai.projects import AIProjectClient
 from azure.search.documents import SearchClient
-from azure.ai.projects.models import FunctionTool, ToolSet, BingGroundingTool
-from azure.ai.projects import AIProjectClient
+
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 
