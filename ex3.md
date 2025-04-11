@@ -11,15 +11,15 @@
 
 ## 演習 3-1 contract_lookup_agent.py の作成
 
-## 演習 3-1 product_search_agent.py の作成
+## 演習 3-2 product_search_agent.py の作成
 
-## 演習 3-1 summary_agent.py の作成
+## 演習 3-3 summary_agent.py の作成
 要約エージェントはプロンプトを工夫して自分で実装してみてください。
 Copilot なども活用してください。
 
-## 演習 3-1 planner_agent.py の作成
+## 演習 3-4 planner_agent.py の作成
 
-## 演習 3-3 Selector Group Chat の作成
+## 演習 3-5 Selector Group Chat の作成
 - 作成した各エージェントをモジュールとして読み込みます
 ```　python
 from agents.contract_lookup_agent import contract_lookup_agent

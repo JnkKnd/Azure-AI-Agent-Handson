@@ -26,11 +26,11 @@ search_client = SearchClient(
     endpoint=AI_SEARCH_ENDPOINT, index_name=INDEX_NAME, credential=AzureKeyCredential(AI_SEARCH_KEY)
 )
 
-async def nonewlines(s: str) -> str:
+def nonewlines(s: str) -> str:
     return s.replace("\n", " ").replace("\r", " ").replace("[", "【").replace("]", "】")
 
 # Azure AI Search による検索
-async def product_search(query: str) -> str:
+def product_search(query: str) -> str:
     """
     保険の商品に関する質問に関して、Azure AI Search の検索結果を返します。
 
@@ -61,6 +61,6 @@ def product_search_agent(model_client: ChatCompletionClient) -> AssistantAgent:
         description="顧客のデータを確認し、保険の契約状況と担当者を確認するエージェント。さらにユーザーからリクエストがあったばあい、ユーザーの担当者に連絡をする。",
         model_client=model_client,
         tools=tools,
-        system_message="""丁寧に返してください""",
+        system_message="""json形式でかえしてください""",
     )
     return agent
