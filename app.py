@@ -1,33 +1,18 @@
 import json
 import os
-import logging
-import asyncio
 import chainlit as cl
 from dotenv import load_dotenv
-from azure.core.credentials import AzureKeyCredential
-from autogen_ext.models.azure import AzureAIChatCompletionClient
-from autogen_agentchat.teams import BaseGroupChat, SelectorGroupChat
+from autogen_agentchat.teams import SelectorGroupChat
 from autogen_ext.models.openai import AzureOpenAIChatCompletionClient
 from autogen_agentchat.conditions import TextMentionTermination, MaxMessageTermination
 from autogen_agentchat.ui import Console
 from autogen_agentchat.base import TaskResult
-from autogen_core import TRACE_LOGGER_NAME, EVENT_LOGGER_NAME
+from autogen_agentchat.messages import TextMessage,ToolCallExecutionEvent, ToolCallRequestEvent
 
 from agents.contract_lookup_agent import contract_lookup_agent
 from agents.product_search_agent import product_search_agent
 from agents.summary_agent import summary_agent
 from agents.planner_agent import planner_agent
-
-# ベースのログ設定をWARNINGに設定（全体のデフォルト）
-logging.basicConfig(level=logging.ERROR)
-
-# TRACE_LOGGER_NAMEのログレベルをERRORに設定
-trace_logger = logging.getLogger(TRACE_LOGGER_NAME)
-trace_logger.setLevel(logging.ERROR)
-
-# EVENT_LOGGER_NAMEのログレベルをERRORに設定
-event_logger = logging.getLogger(EVENT_LOGGER_NAME)
-event_logger.setLevel(logging.ERROR)
 
 # 環境変数の読み込み
 load_dotenv()
@@ -109,13 +94,35 @@ async def clean_console(stream):
                 print(f"\n---------- {message.source} ----------")
                 print(message.content)
 
+@cl.on_message
+async def main(message: cl.Message) -> None:
+    task = message.content
 
-async def main() -> None:
-    task = input("タスクを入力してください： ")
-    # task = user_message
+    try:
+        # Run the async generator and collect the results
+        stream = team.run_stream(task=task)
 
-    # Run the async generator and collect the results
-    stream = team.run_stream(task=task)
-    await clean_console(stream)
+        if not hasattr(stream, "__aiter__"):
+            raise TypeError("Expected an async generator, but got a non-iterable object.")
 
-asyncio.run(main())
+        async for message in stream:
+            if isinstance(message, TaskResult):
+                print(f"TaskResult: {message.stop_reason}")
+                # await cl.Message(content=f"Final Output: {message.stop_reason}").send()
+            elif isinstance(message, TextMessage):
+                response = {"source": message.source, "text": message.content}
+                print(f"TextMessage: {message.source}: {message.content}")
+                await cl.Message(content=f"{message.source}: \n {message.content}").send()
+            elif isinstance(message, ToolCallRequestEvent):
+                print(f"ToolCall: {message}")
+                await cl.Message(
+                    content=f"エージェント: {message.source} \n 呼び出すツール: {message.content[0].name} \n パラメータ: {message.content[0].arguments} "
+                ).send()
+            elif isinstance(message, ToolCallExecutionEvent):
+                print(f"ToolCall: {message}")
+                await cl.Message(
+                    content=f"エージェント: {message.source} \n ツール呼び出し結果: {message.content[0].content.encode().decode('unicode_escape')} "
+                ).send()
+    except TypeError as e:
+        print(f"Error: {e}")
+        await cl.Message(content=f"Error: {e}").send()
