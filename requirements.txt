@@ -2,13 +2,12 @@ azure-identity==1.21.0
 azure-ai-projects==1.0.0b8
 azure-search-documents==11.5.2
 azure-cosmos==4.9.0
-
 openai==1.72.0
 
 # autogen
-autogen-core==0.5.1
-autogen-agentchat==0.5.1
-
+autogen-core==0.4.7
+autogen-agentchat==0.4.7
+autogen-ext[openai]==0.4.7
 
 python-dotenv==1.1.0
 chainlit==2.4.400
