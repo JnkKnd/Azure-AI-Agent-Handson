@@ -1,8 +1,6 @@
 import requests
 import json
 import os
-from typing import Any, Callable, Set, Dict, List, Optional
-from azure.ai.projects.models import FunctionTool, ToolSet
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 
