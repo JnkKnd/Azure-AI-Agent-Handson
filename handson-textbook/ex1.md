@@ -79,16 +79,40 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 📄 [`single-agent/product_search_agent.ipynb`](./single-agent/product_search_agent.ipynb)
 
 ### 2.  補足：関数の定義
-Bing Search の接続について
-このノートブックでは、Azure AI Agent に Bing 検索を統合するために、事前に Azure AI Foundry 上で作成した Bing の接続名を指定する必要があります。
+**Bing Search Grounding の接続名（Connection Name）の設定手順**
+
+このノートブックでは、Bing 検索を利用するために **Grounding with Bing Search** を事前に作成し、  
+それをエージェントのナレッジソースとして接続する必要があります。  
 ![image01-09](../images/image01-09.png)
-  
-設定手順：  
-1. Grounding with Bing Search のデプロイ
-    ![image01-07](../images/image01-07.png)
-2. 該当のエージェントプレイグラウンドのナレッジにBing Searchを追加
-3. その際の名前部分が接続名となります
-  　![image01-08](../images/image01-08.png)
+
+接続時に入力する 「名前」 が、そのままコード内で使用する 接続名（Connection Name） になります。
+
+---
+
+**設定手順**
+**Grounding with Bing Search の作成**
+
+ここでは、「Grounding with Bing Search」を新規作成します。
+1. これまで使用していたサブスクリプション／リソースグループを選択
+2. 「名前」には接続名として使いたい任意の文字列を入力（例：`agentdev04`）
+3. 規約に同意し、「確認と作成」でデプロイ完了
+![image01-07](../images/image01-07.png)
+
+**このとき指定した名前（例：`agentdev04`）が、コード内の接続名として使われます。**
+
+---
+
+**エージェントプレイグラウンドに Bing 検索を追加**
+1. 作成した Bing Search リソースを、該当エージェントのナレッジソースとして追加します。
+2. 「既存の Bing 検索を使用したグラウンド接続の選択」画面で、先ほど作成した名前（例：`agentdev04`）が表示されていることを確認
+3. 選択後、「接続」をクリック
+
+---
+
+**ノートブック内での設定（参考）**
+以下のように環境変数に接続名を指定してください：
+
+BING_CONNECTION_NAME=agentdev04
 
   
 ### 3.  動作の確認
