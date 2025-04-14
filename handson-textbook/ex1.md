@@ -17,7 +17,7 @@
 ---
 ### 1. サンプルデータをダウンロード
 
-以下のファイルを使用します：
+以下のサンプルデータを使用します。ダウンロードしてください。：
 
 📄 [sampledata/product_info.md](../sampledata/product_info.md)
 
@@ -27,12 +27,12 @@
 
 手順：
 
-1. Azure Portal にログイン
+1. Azure Portal にログイン。
 2. Azure AI Foundry Hub を作成したときに一緒に作成された Storage Account を開く  
    ![image01-01](../images/image01-01.png)
-3. `sampledata` という名前の **Blob コンテナ** を作成（または既存のコンテナにアップロード）  
+3. `sampledata` という名前の Blob コンテナ を作成
    ![image01-02](../images/image01-02.png)
-4. `product_info.md` をそのコンテナにアップロードする  
+4. `product_info.md` をそのコンテナにアップロードする
    ![image01-03](../images/image01-03.png)
 
 ---
@@ -52,8 +52,6 @@ Azure AI Search のポータルで以下の手順に従ってインデックス�
 3. データソースで「Azure Blob Storage」を選択  
 4. 先ほどアップロードした `product_info.md` を格納したストレージとコンテナを指定  
    ![image01-06](../images/image01-06.png)
-
-
 
 ---
 
