@@ -55,33 +55,43 @@ Azure AI Search のポータルで以下の手順に従ってインデックス�
 
 ---
 
-## 4. RBAC（ロールベースアクセス制御）の手動設定
+### 4. RBAC（ロールベースアクセス制御）の手動設定
 
 Azure AI Search からストレージにアクセスするには、以下の設定が必要です：
 
-- 対象：**Azure AI Foundry Hub と同時に作成された Storage Account**
-- 設定手順：  
-  1. Azure Portal > ストレージアカウント > 「アクセス制御（IAM）」へ移動  
-  2. 「ロールの割り当て」から「Storage Blob データ閲覧者」を選択  
-  3. 検索フィルタから Azure AI Search の **マネージドID** を選択し、割り当て  
+対象：**Azure AI Foundry Hub と同時に作成された Storage Account**
+設定手順：  
+1. Azure Portal > ストレージアカウント > 「アクセス制御（IAM）」へ移動
+2. 「ロールの割り当て」から「Storage Blob データ閲覧者」を選択
+3. 検索フィルタから Azure AI Search の **マネージドID** を選択し、割り当て  
 
 
 ---
 
-## 次のステップへ
+## 演習 1-2 エージェントの作成からツールセットの登録、スレッドの実行までの手順
 
 このインデックス作成が完了したら、次の演習では AI Agent からこのデータを検索する処理を実装していきます。
 
+### 1. セットアップ手順
+1. VS Code 上で `single agents` フォルダを作成。
+2. 下記のノートブックファイル（`product_search_agent.ipynb`）をそのフォルダ内に配置。
 
-## 演習 1-2 保険商品案内エージェントの作成
-1. VScode で single agents フォルダを作成する
+📄 [`single-agent/product_search_agent.ipynb`](./single-agent/product_search_agent.ipynb)
 
-## 演習 1-2 関数の定義
-- Azure AI Search の検索
-- Code Interpreter 追加
-- Bing Search
+### 2.  補足：関数の定義
+Bing Search の接続について
+このノートブックでは、Azure AI Agent に Bing 検索を統合するために、事前に Azure AI Foundry 上で作成した Bing の接続名を指定する必要があります。
+![image01-09](../images/image01-09.png)
+  
+設定手順：  
+1. Grounding with Bing Search のデプロイ
+    ![image01-07](../images/image01-07.png)
+2. 該当のエージェントプレイグラウンドのナレッジにBing Searchを追加
+3. その際の名前部分が接続名となります
+  　![image01-08](../images/image01-08.png)
 
-## 演習 1-3 動作の確認
+  
+### 3.  動作の確認
 - ターミナルからの実行
 - エージェントプレイグラウンドでの確認
 
