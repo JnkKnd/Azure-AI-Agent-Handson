@@ -66,7 +66,7 @@ Azure AI Search からストレージにアクセスするには、以下の設�
   1. Azure Portal > ストレージアカウント > 「アクセス制御（IAM）」へ移動  
   2. 「ロールの割り当て」から「Storage Blob データ閲覧者」を選択  
   3. 検索フィルタから Azure AI Search の **マネージドID** を選択し、割り当て  
-     ![image01-07](../images/image01-07.png)
+
 
 ---
 
