@@ -60,11 +60,19 @@ Azure AI Search のポータルで以下の手順に従ってインデックス�
 Azure AI Search からストレージにアクセスするには、以下の設定が必要です：
 
 対象：**Azure AI Foundry Hub と同時に作成された Storage Account**
+
 設定手順：  
 1. Azure Portal > ストレージアカウント > 「アクセス制御（IAM）」へ移動
 2. 「ロールの割り当て」から「Storage Blob データ閲覧者」を選択
-3. 検索フィルタから Azure AI Search の **マネージドID** を選択し、割り当て  
+   ![image01-10](../images/image01-10.png)
+   ![image01-11](../images/image01-11.png)
+3. 検索フィルタから Azure AI Search の マネージドID を選択
+4. 「マネージド ID」リストから、Azure AI Search のリソース名（例：aisearch-xxx）を検索して選択
+   ![image01-12](../images/image01-12.png)
+5. すべての設定を確認した後、「**レビューと割り当て**」をクリックして、設定を完了。
 
+これで、Azure AI Search がストレージアカウントにアクセスできるようになります。
+この設定により、検索インデックス作成時に必要なストレージデータにアクセス可能となり、エージェントや他のアプリケーションから適切にデータを操作できます。
 
 ---
 
@@ -76,7 +84,7 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 1. VS Code 上で `single agents` フォルダを作成。
 2. 下記のノートブックファイル（`product_search_agent.ipynb`）をそのフォルダ内に配置。
 
-📄 [`single-agent/product_search_agent.ipynb`](./single-agent/product_search_agent.ipynb)
+📄[product_search_agent.ipynb](../single-agent/product_search_agent.ipynb)
 
 ### 2.  補足：関数の定義
 **Bing Search Grounding の接続名（Connection Name）の設定手順**
