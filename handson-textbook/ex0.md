@@ -8,10 +8,10 @@
 
 ## 演習 0-1 :　ハンズオンのゴール
 ### 構成図
-![alt text](images/image01.png)
+![alt text](../images/image01.png)
 
 ### 構築する UI のイメージ
-![alt text](images/multiagent.gif)
+![alt text](../images/multiagent.gif)
 
 ## 演習 0-2 : 事前準備とリソースの作成
 この演習 0 で実施するタスクは以下のとおりです。
@@ -45,4 +45,4 @@
 
 <hr>
 
-🏚️ [README に戻る](README.md)
+🏚️ [README に戻る](../README.md)

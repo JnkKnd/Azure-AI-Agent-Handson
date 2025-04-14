@@ -8,7 +8,7 @@
 - Bing Search Grounding の登録
 - エージェントからツールの呼び出し
 
-![alt text](images/image11.png)
+![alt text](../images/image11.png)
 
 
 ## 演習 1-1 保険商品に関するインデックスを作成する

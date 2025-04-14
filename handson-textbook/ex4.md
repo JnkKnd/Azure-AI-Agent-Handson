@@ -34,10 +34,10 @@ from agents.planner_agent import planner_agent
 
 ## 次へ
 
-👉 [**演習5: エージェントの実装における考慮点**](ex4.md) 
+👉 [**演習5: エージェントの実装における考慮点**](ex5.md) 
 
 <br>
 
 <hr>
 
-🏚️ [README に戻る](README.md)
+🏚️ [README に戻る](../README.md)

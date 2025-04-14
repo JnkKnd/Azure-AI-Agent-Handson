@@ -1,11 +1,11 @@
 # Azure-AI-Agent-Handson
 ## 目次
-0. [事前準備とリソースの作成](ex0.md)
-1. [保険商品案内エージェントの作成](ex1.md)
-2. [契約管理エージェントの作成](ex2.md)
-3. [AutoGen でのマルチエージェント実装(前編)](ex3.md)
-4. [AutoGen でのマルチエージェント実装(後編)](ex4.md)
-5. [マルチエージェントの実装における考慮点](ex5.md)
+0. [事前準備とリソースの作成](handson-textbook/ex0.md)
+1. [保険商品案内エージェントの作成](handson-textbook/ex1.md)
+2. [契約管理エージェントの作成](handson-textbook/ex2.md)
+3. [AutoGen でのマルチエージェント実装(前編)](handson-textbook/ex3.md)
+4. [AutoGen でのマルチエージェント実装(後編)](handson-textbook/ex4.md)
+5. [マルチエージェントの実装における考慮点](handson-textbook/ex5.md)
 
 
 ## ハンズオンで実施する内容
@@ -26,10 +26,9 @@
 
 
 ## 注意事項
-- 本番向けではありません
+- 本番運用を想定した内容ではございません
 - 最新情報は公式のドキュメントをご確認ください
 - 対象レベル：Azure で RAG の構築を行ったことがある方
-- 参考レポジトリ：https://github.com/Azure-Samples/contoso-creative-writer
 
 ## 推奨環境
 - python 3.11以上

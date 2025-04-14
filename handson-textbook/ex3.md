@@ -269,10 +269,10 @@ def summary_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 
 ## 次へ
 
-👉 [**演習 4  :**](ex4.md) 
+👉 [**演習 4:　AutoGen でのマルチエージェント実装(後編)**](ex4.md) 
 
 <br>
 
 <hr>
 
-🏚️ [README に戻る](README.md)
+🏚️ [README に戻る](../README.md)
