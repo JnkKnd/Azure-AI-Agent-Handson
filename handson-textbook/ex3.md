@@ -29,6 +29,26 @@ def agent_name(model_client: ChatCompletionClient) -> AssistantAgent:
     return agent
 ```
 
+また、今回のハンズオンでは **Selector Group Chat** でマルチエージェントを実装していきます。**Selector Group Chat** では生成 AI モデル（LLMなど）が共有コンテキストに基づいて次のスピーカーを選択することで、動的でコンテキストを認識したコラボレーションが可能になります。
+
+- Selector による中央集権的なエージェント割り振り
+- 遷移先の決定: LLM+ルール
+- スレッド: メッセージスレッドを共有
+
+![alt text](../images/image03-1.png)
+
+AutoGenの他のマルチエージェントデザインパターンについては、[Developers Seminar の YouTube動画](https://youtu.be/vaBspzSug1A) および下記のブログで紹介されています。
+- ![AutoGen v0.4 マルチエージェントデザインパターン実装メモ① Selector によるエージェント選択](https://qiita.com/nohanaga/items/164d70e4c50c1ce2cd4c)
+- ![AutoGen v0.4 マルチエージェントデザインパターン実装メモ② Swarm による効率的エージェント選択](https://qiita.com/nohanaga/items/9bd32514655f142b23c6)
+- ![AutoGen v0.4 マルチエージェントデザインパターン実装メモ③ Magentic-One エージェント進捗台帳のススメ](https://qiita.com/nohanaga/items/28fcf00a23e990ac3551)
+
+### 時間がない方
+<details>
+<summary>実行のみを行う手順</summary>
+```cd autogen-multiagent```
+```chainlit run app.py -w```
+</details>
+
 ## 演習 3-1 contract_lookup_agent.py の作成
 この手順では Azure AI Agent SDK を用いて
 - ```mkdir autogen-multiagent``` でautogen-multiagent フォルダを作成
@@ -216,13 +236,14 @@ def product_search_agent(model_client: ChatCompletionClient) -> AssistantAgent:
     return agent
 ```
 
-
-
 ## 演習 3-3 summary_agent.py の作成
 このエージェントは、エージェント同士の回答を要約して、最終回答を生成するエージェントです。
 - summary_agent.py ファイルを新規作成
-- tool の呼び出しは行いません
-- 要約エージェントはプロンプトを工夫して自分で実装してみてください。ひな形は下記です。必要に応じて Copilot などをご活用ください・
+
+AutoGen のマルチエージェント実装では、タスクの終了条件を指定する必要があります。
+- 要約エージェントはマルチエージェントの会話の終了条件となる、`"TERMINATE"`という文字列を最後に生成させます
+- 要約エージェントはプロンプトを工夫して自分で実装してみてください。ひな形は下記です。必要に応じて Copilot などをご活用ください。
+- 要約エージェントでは、tool の呼び出しは行いません
 ```python
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
@@ -262,8 +283,50 @@ def summary_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 
 
 ## 演習 3-4 planner_agent.py の作成
+ここまでで、DBを検索するエージェント、商品データを検索するエージェント、要約エージェントができました。
+次に、ユーザーからの入力に対して、タスクを完了するために必要な計画を立てる planner agent を作成します。
+システムプロンプトが重要になります。
+
+- planner_agents.py ファイルを新規作成し、以下を記述してください
+```python
+from autogen_agentchat.agents import AssistantAgent
 
 
+def planner_agent(model_client) -> AssistantAgent:
+    return AssistantAgent(
+        name="PlannerAgent",
+        description="与えられたタスクを完了するためのサブタスクを計画する Agent。計画を立てるだけでサブタスクの実行は行いません。",
+        model_client=model_client,
+        system_message="""ユーザーの質問を適切に回答するためのサブタスクを計画する AI アシスタントです。
+
+- あなたはサブタスクの実行をしてはいけません。サブタスクの計画を作成することのみがあなたの役割です。
+- サブタスクを作成するためのあなたの team members は以下です。:
+  - contract_lookup_agent: ユーザーの保険加入状況データベースを検索して、回答を行うエージェント。ユーザーの担当者に連絡を送ることができます。
+  - product_search_agnet: 保険の商品について、商品説明の資料を検索して、回答を行うエージェント。
+  - SummaryAgent: 他の team members からの情報をもとにユーザーへ最終回答を作成・校正を実行することができます。
+
+## サブタスクの計画方法
+
+- あなたの役割は、team members を使って出張計画を作成するためのサブタスクを計画することです。
+- サブタスクの実行は必ず team mebers に委任して行います。
+- サブタスクの最後は、必ず SummaryAgent に対して、ユーザーへ回答するための出張計画の作成を依頼します。
+
+サブタスクの計画は以下のフォーマットで行います:
+
+1. <agent> : <task>
+2. <agent> : <task>
+...
+
+
+## "計画" について
+最後に Summary Agent にこれまでの会話履歴の要約を依頼します。
+""",
+    )
+
+```
+
+以上で4つのエージェントが作成できました。\
+後編では、これらのエージェントのオーケストレーションを行い、簡単なUIを作成します。
 
 <br>
 
