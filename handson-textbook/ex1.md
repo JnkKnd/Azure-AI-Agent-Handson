@@ -86,8 +86,7 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 
 📄[product_search_agent.ipynb](../single-agent/product_search_agent.ipynb)
 
-### 2.  補足：関数の定義
-**Bing Search Grounding の接続名（Connection Name）の設定手順**
+### 2.  補足：Bing Search Grounding の接続名（Connection Name）の設定手順
 
 このノートブックでは、Bing 検索を利用するために **Grounding with Bing Search** を事前に作成し、  
 それを env ファイルの　BING_CONNECTION_NAME　で定義する必要があります。  
@@ -95,8 +94,6 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 接続時に入力する 「名前」 が、そのままコード内で使用する 接続名（Connection Name） になります。
 
 ---
-
-**設定手順**
 **Grounding with Bing Search の作成**
 
 ここでは、「Grounding with Bing Search」を新規作成します。
