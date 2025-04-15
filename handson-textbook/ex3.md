@@ -42,19 +42,28 @@ AutoGenの他のマルチエージェントデザインパターンについて�
 - [AutoGen v0.4 マルチエージェントデザインパターン実装メモ② Swarm による効率的エージェント選択](https://qiita.com/nohanaga/items/9bd32514655f142b23c6)
 - [AutoGen v0.4 マルチエージェントデザインパターン実装メモ③ Magentic-One エージェント進捗台帳のススメ](https://qiita.com/nohanaga/items/28fcf00a23e990ac3551)
 
-### 時間がない方
+### コーディングの手順を飛ばして実行の様子を確認したい方
 <details>
 <summary>実行のみを行う手順</summary>
-``` cd autogen-multiagent ``` 
-```chainlit run app.py -w```
+
+autogen-multiagent フォルダに移動してください\
+``` cd autogen-multiagent ``` \
+そこで下記コマンドで app.py を実行してください\
+```chainlit run app.py -w```\
+chainlit の UI が表示されるので、次のようなタスクを入力してみてください。\
+```
+ユーザーID 1234 の人の加入しているプランを調べ、そのプランの詳細を教えて
+```
 </details>
 
 ## 演習 3-1 contract_lookup_agent.py の作成
 この手順では Azure AI Agent SDK を用いて
-- ```mkdir autogen-multiagent``` でautogen-multiagent フォルダを作成
-- ターミナルで ```cd autogen-multiagent``` を実行しディレクトリを移動
-- 新規ファイルで contract_lookup_agent.py を作成
-- 必要なモジュールをインポートする文を先頭に追加
+1. ```mkdir multi-agent``` でmulti-agent フォルダを作成します。
+2. ターミナルで ```cd multi-agent``` を実行し、ディレクトリを移動します。
+3. **（重要）これ以降の手順は全て `multi-agent` ディレクトリ内で作業してください。**
+4. 新規ファイルで `contract_lookup_agent.py` を作成します。
+5. 必要なモジュールをインポートする文をファイルの先頭に追加します。
+
 ```python
 import requests
 import json
@@ -62,8 +71,8 @@ import os
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 ```
-- 次に、Azure AI Agent SDK の際に記述した、契約管理DBを検索する関数を定義します
-- 下記の contract_lookup 関数を追加
+6. 次に、Azure AI Agent SDK の際に記述した、契約管理DBを検索する関数を定義します
+7. 下記の contract_lookup 関数を追加
 ```python
 def contract_lookup(user_id: int)->str:
     # 便宜上ハードコードしています。Cosmos DB から取得する関数でも構いません。
@@ -103,7 +112,7 @@ def contract_lookup(user_id: int)->str:
     return json.dumps({"user_info": user_info})
 ```
 
-- 担当者にメールを送信する send_email 関数についても同様に追加
+8. 担当者にメールを送信する send_email 関数についても同様に追加
 ```python
 def send_email(customer: str, staff_email: str, inquiry: str) -> str:
     """
@@ -139,11 +148,11 @@ def send_email(customer: str, staff_email: str, inquiry: str) -> str:
         print(f"エラー: {err}")
         return json.dumps({"status": "メールで通知に失敗しました"})
 ```
-- 次に AutoGen の AssistantAgent クラスで使えるように tools の定義を行います。この記述方法は Azure AI Agent SDK と異なる点です。今回は2つしか関数を定義していませんが、下記のような形に倣って追加することも可能です。
+9. 次に AutoGen の AssistantAgent クラスで使えるように tools の定義を行います。この記述方法は Azure AI Agent SDK と異なる点です。今回は2つしか関数を定義していませんが、下記のような形に倣って追加することも可能です。
 ``` python
 tools = [contract_lookup, send_email]
 ```
-- 最後に AssistantAgent のインスタンスを作成するための関数を定義します。システムメッセージなどは独自に改善していただいて大丈夫です。
+10. 最後に AssistantAgent のインスタンスを作成するための関数を定義します。システムメッセージなどは独自に改善していただいて大丈夫です。
 ```python
 def contract_lookup_agent(model_client: ChatCompletionClient) -> AssistantAgent:
     agent = AssistantAgent(
@@ -158,9 +167,9 @@ def contract_lookup_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 ```
 
 ## 演習 3-2 product_search_agent.py の作成
-- 実施するタスクとしては contract_lookup_agent.py と同じ流れです
-- 新規ファイルで product_search_agent.py を作成してください
-- 必要なモジュールのインポート
+実施するタスクとしては contract_lookup_agent.py と同じ流れです
+1. 新規ファイルで product_search_agent.py を作成してください
+2. 必要なモジュールのインポート
     - Azure AI Search SDK を用いるため、 Azure の認証のための機能を使います
 ```python
 import json
@@ -173,7 +182,7 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 ```
 
-- Azure AI Search のクライアント定義
+3. Azure AI Search のクライアント定義
 ```python
 load_dotenv()
 AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
@@ -185,14 +194,14 @@ search_client = SearchClient(
 )
 ```
 
-- 検索結果を整形するための nonewlines 関数の定義 (任意)
+4. 検索結果を整形するための nonewlines 関数の定義 (任意)
     - この関数はツールとしては呼び出しません
 ```python
 def nonewlines(s: str) -> str:
     return s.replace("\n", " ").replace("\r", " ").replace("[", "【").replace("]", "】")
 ```
 
--　Azure AI Search のインデックスを検索する product_search 関数の定義
+5.　Azure AI Search のインデックスを検索する product_search 関数の定義
 ```python
 def product_search(query: str) -> str:
     """
@@ -217,13 +226,13 @@ def product_search(query: str) -> str:
     return context_json
 ```
 
-- Grounding with Bing Search および Code Interpreter は今回のマルチエージェント実装では用いません
-- 関数を tool として登録
+6. Grounding with Bing Search および Code Interpreter は今回のマルチエージェント実装では用いません
+7. 関数を tool として登録
 ```python
 tools = [product_search]
 ```
 
-- AssistantAgent のインスタンスを作成するための関数を定義します。システムメッセージなどは独自に改善していただいて大丈夫です。
+8. AssistantAgent のインスタンスを作成するための関数を定義します。システムメッセージなどは独自に改善していただいて大丈夫です。
 ```python
 def product_search_agent(model_client: ChatCompletionClient) -> AssistantAgent:
     agent = AssistantAgent(
@@ -238,12 +247,15 @@ def product_search_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 
 ## 演習 3-3 summary_agent.py の作成
 このエージェントは、エージェント同士の回答を要約して、最終回答を生成するエージェントです。
-- summary_agent.py ファイルを新規作成
+1. summary_agent.py ファイルを新規作成
 
 AutoGen のマルチエージェント実装では、タスクの終了条件を指定する必要があります。
 - 要約エージェントはマルチエージェントの会話の終了条件となる、`"TERMINATE"`という文字列を最後に生成させます
-- 要約エージェントはプロンプトを工夫して自分で実装してみてください。ひな形は下記です。必要に応じて Copilot などをご活用ください。
 - 要約エージェントでは、tool の呼び出しは行いません
+
+2. 要約エージェントはプロンプトを工夫して自分で実装してみてください。ひな形は下記です。必要に応じて Copilot などをご活用ください。
+
+
 ```python
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
@@ -287,7 +299,7 @@ def summary_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 次に、ユーザーからの入力に対して、タスクを完了するために必要な計画を立てる planner agent を作成します。
 システムプロンプトが重要になります。
 
-- planner_agents.py ファイルを新規作成し、以下を記述してください
+1. planner_agents.py ファイルを新規作成し、以下を記述してください
 ```python
 from autogen_agentchat.agents import AssistantAgent
 

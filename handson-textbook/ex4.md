@@ -22,7 +22,7 @@ from autogen_agentchat.base import TaskResult
 from autogen_agentchat.messages import TextMessage,ToolCallExecutionEvent, ToolCallRequestEvent
 ```
 
-- 前編で作成した4つのエージェントをモジュールとして読み込みます
+4. 前編で作成した4つのエージェントをモジュールとして読み込みます
 ```　python
 from agents.contract_lookup_agent import contract_lookup_agent
 from agents.product_search_agent import product_search_agent
@@ -30,7 +30,7 @@ from agents.summary_agent import summary_agent
 from agents.planner_agent import planner_agent
 ```
 
-### 環境変数の読み込み
+5. 環境変数の読み込み
 ```python
 load_dotenv()
 AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
@@ -41,7 +41,7 @@ INDEX_NAME = os.getenv("INDEX_NAME")
 AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
 ```
 
-### LLM クライアントの定義
+6. LLM クライアントの定義
 ```python
 aoai_client = AzureOpenAIChatCompletionClient(
     azure_deployment=DEPLOYMENT_NAME,
@@ -52,7 +52,7 @@ aoai_client = AzureOpenAIChatCompletionClient(
 )
 ```
 
-### Selector Group Chat 作成時のプロンプト指定
+7. Selector Group Chat 作成時のプロンプト指定
 ```python
 selector_prompt = """あなたのタスクは、会話の状況に応じて次のタスクを実行する role を選択することです。
 ## 次の話者の選択ルール
@@ -75,7 +75,7 @@ selector_prompt = """あなたのタスクは、会話の状況に応じて次�
 - タスクを完了するための必要な情報が揃ったと判断したら "SummaryAgent" に最終回答の作成を依頼します。
 ```
 
-### 各エージェントに、モデルクライアントを引数に渡す
+8. 各エージェントに、モデルクライアントを引数に渡す
 ```python
 planner = planner_agent(aoai_client)
 product_search = product_search_agent(aoai_client)
@@ -83,7 +83,7 @@ contract_lookup = contract_lookup_agent(aoai_client)
 summary = summary_agent(aoai_client)
 ```
 
-### マルチエージェントの終了条件の定義
+9. マルチエージェントの終了条件の定義\
 AutoGen には 無限ループを防止するため [8 つの組み込みの終了条件](https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/termination.html#)が定義されています。終了条件は以下のように OR 条件で指定できるのが便利です。 \
 今回は「応答に "TERMINATE" が含まれる」もしくは「最大生成メッセージ数が 10」という条件にしています。
 
@@ -91,7 +91,7 @@ AutoGen には 無限ループを防止するため [8 つの組み込みの終�
 termination_condition = TextMentionTermination("TERMINATE") | MaxMessageTermination(10)
 ```
 
-### Selector Group Chat の定義
+10. Selector Group Chat の定義
 ``` python
 team = SelectorGroupChat(
     [
@@ -111,7 +111,7 @@ team = SelectorGroupChat(
 ここまでで各エージェントの定義および、Selector Group Chat の作成ができました。
 UIを構築する前に、実行ができるか確認しましょう。
 
-### 実行時の出力を見やすくする関数
+1. 実行時の出力を見やすくする関数
 ```python
 async def clean_console(stream):
     async for message in stream:
@@ -127,13 +127,15 @@ async def clean_console(stream):
 
 ```
 
-### 実行部分
+2. 実行部分 
+
 `run_stream(task=task)` のメソッドで、Selector Group Chat にユーザーからのタスクが渡されます。
 
 ``` python
 task = input("タスクを入力してください：")
 await clean_console(team.run_stream(task=task))
 ```
+
 入力するタスクの例は以下です。
 ```
 ユーザーID 1234 の人の加入しているプランについて、詳細を教えて
@@ -143,10 +145,8 @@ await clean_console(team.run_stream(task=task))
 (※見やすさについては準備中)\
 以下のような最終回答が表示されていればOKです。
 ```
-出力例
+出力例 (※Update予定)
 ```
-
-
 
 ## 演習4-3 : chainlit による UI 構築
 今回作成する UI は [Chainlit](https://docs.chainlit.io/get-started/overview) を採用しています。pythhon で LLM を用いたチャット UI を手軽に構築できるフレームワークです。
@@ -157,7 +157,8 @@ UI を記述する際、先ほどの実行部分のコードは不要なので�
 # await clean_console(team.run_stream(task=task))
 ```
 
-### UI 部分を記述
+1. UI 部分を記述
+
 `@cl.on_message` が chainlit でメッセージが送信されたときに実行される関数を定義します。今回は非常に簡易的な記述をしていますが、チャットの開始、終了、再開時の処理や、スタート画面のカスタマイズ、ボタンの表示などもできます。
 
 以下の内容を、ファイルの下部に追加してください。\
@@ -207,14 +208,16 @@ async def main(message: cl.Message) -> None:
 ここまでで、コーディングは終了です。`chainlit app.py run -w`
 を実行すると、既定では `localhost:8000` で UI が表示されます。
 
-### タスクの実行
-- ブラウザ上で `localhost:8000` にアクセスし、タスクを入力してみましょう。
+2. タスクの実行
+
+ブラウザ上で `localhost:8000` にアクセスし、タスクを入力してみましょう。
 ```
 ユーザーID 1234 の人の加入しているプランについて、詳細を教えて
 ```
 
-[こちらの.mp4](../images/multiagent.mp4)のような実行結果となればOKです。
-
+次のように、Planner Agent によって計画が立てられ、計画に沿って各エージェントにメッセージの受け渡しがされ、適切な Tool Call がされ、最終回答が得られるような挙動となればOKです。
+![alt text](../images/multiagent.gif) \
+gifが見づらい場合は[こちらの動画](../images/multiagent.mp4)をご覧ください。
 
 <br>
 
