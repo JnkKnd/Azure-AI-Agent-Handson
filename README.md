@@ -25,6 +25,8 @@
 ![alt text](images/image01.png)
 
 ### 構築する UI のイメージ
+下記の gif が見づらい場合は、[こちらの.mp4](../images/multiagent.mp4)でご確認ください。
+
 ![alt text](images/multiagent.gif)
 
 

@@ -38,14 +38,14 @@ def agent_name(model_client: ChatCompletionClient) -> AssistantAgent:
 ![alt text](../images/image03-1.png)
 
 AutoGenの他のマルチエージェントデザインパターンについては、[Developers Seminar の YouTube動画](https://youtu.be/vaBspzSug1A) および下記のブログで紹介されています。
-- ![AutoGen v0.4 マルチエージェントデザインパターン実装メモ① Selector によるエージェント選択](https://qiita.com/nohanaga/items/164d70e4c50c1ce2cd4c)
-- ![AutoGen v0.4 マルチエージェントデザインパターン実装メモ② Swarm による効率的エージェント選択](https://qiita.com/nohanaga/items/9bd32514655f142b23c6)
-- ![AutoGen v0.4 マルチエージェントデザインパターン実装メモ③ Magentic-One エージェント進捗台帳のススメ](https://qiita.com/nohanaga/items/28fcf00a23e990ac3551)
+- [AutoGen v0.4 マルチエージェントデザインパターン実装メモ① Selector によるエージェント選択](https://qiita.com/nohanaga/items/164d70e4c50c1ce2cd4c)
+- [AutoGen v0.4 マルチエージェントデザインパターン実装メモ② Swarm による効率的エージェント選択](https://qiita.com/nohanaga/items/9bd32514655f142b23c6)
+- [AutoGen v0.4 マルチエージェントデザインパターン実装メモ③ Magentic-One エージェント進捗台帳のススメ](https://qiita.com/nohanaga/items/28fcf00a23e990ac3551)
 
 ### 時間がない方
 <details>
 <summary>実行のみを行う手順</summary>
-```cd autogen-multiagent```
+``` cd autogen-multiagent ``` 
 ```chainlit run app.py -w```
 </details>
 
