@@ -47,15 +47,7 @@ Azure AI Search のポータルで以下の手順に従ってインデックス�
 > - Azure AI Search の価格プランは **Free** を利用可能  
 > - リージョンは **Azure AI Foundry Hub** と同一にしてください
 
-2. 「データのインポートとベクター化」を選択  
-   ![image01-05](../images/image01-05.png)
-3. データソースで「Azure Blob Storage」を選択  
-4. 先ほどアップロードした `product_info.md` を格納したストレージとコンテナを指定  
-   ![image01-06](../images/image01-06.png)
-
----
-
-### 4. RBAC（ロールベースアクセス制御）の手動設定
+2. RBAC（ロールベースアクセス制御）の手動設定
 
 Azure AI Search からストレージにアクセスするには、以下の設定が必要です：
 
@@ -72,57 +64,49 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 5. すべての設定を確認した後、「**レビューと割り当て**」をクリックして、設定を完了。
 
 これで、Azure AI Search がストレージアカウントにアクセスできるようになります。
-この設定により、検索インデックス作成時に必要なストレージデータにアクセス可能となり、エージェントや他のアプリケーションから適切にデータを操作できます。
+この設定により、検索インデックス作成時に必要なストレージデータにアクセス可能となり、エージェントや他のアプリケーションから適切にデータを操作できます。 
 
----
+3.「データのインポートとベクター化」を選択
+   Azure AI Search のリソースに移動し、上部にあるデータのインポートとベクター化を選択してください。
+   ![image01-05](../images/image01-05.png)
+4. データソースで「Azure Blob Storage」を選択  
+5. 先ほどアップロードした `product_info.md` を格納したストレージとコンテナを指定  
+   ![image01-06](../images/image01-06.png)
 
-## 演習 1-2 エージェントの作成からツールセットの登録、スレッドの実行までの手順
 
-このインデックス作成が完了したら、次の演習では AI Agent からこのデータを検索する処理を実装していきます。
+## 演習 1-2 Grounding with Bing Search の作成  
 
-### 1. セットアップ手順
-1. VS Code 上で `single agents` フォルダを作成。
-2. 下記のノートブックファイル（`product_search_agent.ipynb`）をそのフォルダ内に配置。
+### Grounding with Bing Search の作成
 
-📄[product_search_agent.ipynb](../single-agent/product_search_agent.ipynb)
-
-### 2.  補足：Bing Search Grounding の接続名（Connection Name）の設定手順
-
-このノートブックでは、Bing 検索を利用するために **Grounding with Bing Search** を事前に作成し、  
-それを env ファイルの　BING_CONNECTION_NAME　で定義する必要があります。  
-
-接続時に入力する 「名前」 が、そのままコード内で使用する 接続名（Connection Name） になります。
-
----
-**Grounding with Bing Search の作成**
-
-ここでは、「Grounding with Bing Search」を新規作成します。
+ここでは、「Grounding with Bing Search」リソースを新規作成します。
 1. これまで使用していたサブスクリプション／リソースグループを選択
 2. 「名前」には接続名として使いたい任意の文字列を入力（例：`agentdev04`）
 3. 規約に同意し、「確認と作成」でデプロイ完了
 ![image01-07](../images/image01-07.png)
 
----
-
-**プロジェクトに接続**
+### プロジェクトに接続
 1. AI Foundryでこれまで使用していたプロジェクトを選択し、管理センターを選択
 ![image01-13](../images/image01-13.png)
 2. 「新しい接続」を選択し、「Bing検索を使用したグラウンド」を追加する。
 ![image01-14](../images/image01-14.png)
-3. 管理画面に戻り、接続名を確認する。
+3. 管理画面に戻り、接続名を確認する。この追加方法の場合、既定でリソース名が接続名となります。
 ![image01-15](../images/image01-15.png)
 
 ---
 
-**env ファイル内での設定（参考）**
-以下のように環境変数に接続名を指定してください：
+### .env ファイルの設定
 
-BING_CONNECTION_NAME=agentdev04
+以下のように `.env` ファイルの環境変数に接続名を指定してください：
+```python 
+BING_CONNECTION_NAME= <接続名> #(例 agentdev04) 
+```
 
   
-### 3.  動作の確認
-- ターミナルからの実行
-- エージェントプレイグラウンドでの確認
+## 演習1-3  動作確認
+エージェントの作成からツールセットの登録、スレッドの実行までの手順は以下のノートブックから行ってください。
+
+📄[product_search_agent.ipynb](../single-agent/product_search_agent.ipynb)
+
 
 <br>
 
