@@ -92,17 +92,20 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 3. 管理画面に戻り、接続名を確認する。この追加方法の場合、既定でリソース名が接続名となります。
 ![image01-15](../images/image01-15.png)
 
----
+ 
+## 演習1-3  動作確認
 
 ### .env ファイルの設定
 
 以下のように `.env` ファイルの環境変数に接続名を指定してください：
-```python 
-BING_CONNECTION_NAME= <接続名> #(例 agentdev04) 
+```python
+PROJECT_CONNECTION_STRING = <プロジェクトの接続文字列>
+AI_SEARCH_ENDPOINT＝ <Azure AI Search のエンドポイント>
+AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
+INDEX_NAME = <インデックス名>
+BING_CONNECTION_NAME= <Bing 接続名> #(例 agentdev04) 
 ```
 
-  
-## 演習1-3  動作確認
 エージェントの作成からツールセットの登録、スレッドの実行までの手順は以下のノートブックから行ってください。
 
 📄[product_search_agent.ipynb](../single-agent/product_search_agent.ipynb)
