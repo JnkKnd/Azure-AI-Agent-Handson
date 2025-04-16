@@ -46,14 +46,18 @@ AutoGenの他のマルチエージェントデザインパターンについて�
 <details>
 <summary>実行のみを行う手順</summary>
 
-autogen-multiagent フォルダに移動してください\
-``` cd autogen-multiagent ``` \
-そこで下記コマンドで app.py を実行してください\
-```chainlit run app.py -w```\
-chainlit の UI が表示されるので、次のようなタスクを入力してみてください。\
+1. autogen-multiagent フォルダに移動\
+``` cd autogen-multiagent ``` 
+
+2. 下記コマンドで app.py を実行\
+```chainlit run app.py -w```
+
+3. `http://localhost:8000` でchainlit の UI が表示されるので、次のようなタスクを入力してみてください。
 ```
 ユーザーID 1234 の人の加入しているプランを調べ、そのプランの詳細を教えて
 ```
+
+4. 実行結果が UI 上に表示されます
 </details>
 
 ## 演習 3-1 contract_lookup_agent.py の作成
@@ -68,6 +72,7 @@ chainlit の UI が表示されるので、次のようなタスクを入力し�
 import requests
 import json
 import os
+import asyncio
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 ```
