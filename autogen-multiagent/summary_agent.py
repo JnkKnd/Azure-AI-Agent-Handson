@@ -4,7 +4,7 @@ from autogen_core.models import ChatCompletionClient
 
 def summary_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 
-    sumamry_agent = AssistantAgent(
+    summary_agent = AssistantAgent(
         name="SummaryAgent",
         description="これまでの会話履歴を要約する AI アシスタント",
         model_client=model_client,
@@ -18,4 +18,4 @@ def summary_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 """
     )
 
-    return sumamry_agent
+    return summary_agent
