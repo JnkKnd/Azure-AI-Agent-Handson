@@ -18,12 +18,18 @@
 ※ コマンドは環境に応じて適宜読みかえてください。下記は Windows Powershell の場合の例です。
 1. リポジトリをクローン\
 ```git clone https://github.com/JnkKnd/Azure-AI-Agent-Handson.git```
-1. 仮想環境を作成（python の version は 3.11 以上をお使いください） \
+
+1. 仮想環境を作成（python の version は 3.11 以上をお使いください）\
 ```python -m venv .venv```
-1. 仮想環境を有効化 \
+
+1. 仮想環境を有効化\
 ```./.venv/Scripts/activate``` 
-1. 必要なライブラリをインストール \
+
+1. 必要なライブラリをインストール\
 ```pip install -r requirements.txt```
+
+1. `.env-sample`をコピーし、同じ階層に `.env`ファイルとして保存\
+```copy .env-sample .env```
 
 ## 演習 0-2 : 事前準備とリソースの作成
 この演習 0 で実施するタスクは以下のとおりです。
