@@ -134,6 +134,15 @@
 
 
 ## 演習 2-3 動作確認
+
+### .env ファイルの設定
+以下のように `.env` ファイルの環境変数に接続名を指定してください：
+```python 
+LOGIC_APPS= <Logic Apps の HTTP URL>
+ACCOUNT_URI= <Cosmos DB の URI>
+ACCOUNT_KEY= <Cosmos DB の アカウントキー>
+```
+
 次のノートブックから、動作確認を行ってください。
 
 [contract_lookup_agent.ipynb](../single-agent/contract_lookup_agent.ipynb)
