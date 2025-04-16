@@ -132,29 +132,32 @@ async def clean_console(stream):
 `run_stream(task=task)` のメソッドで、Selector Group Chat にユーザーからのタスクが渡されます。
 
 ``` python
-task = input("タスクを入力してください：")
-await clean_console(team.run_stream(task=task))
-```
+async def main():
+    task = "ユーザーID 1234 の人の加入しているプランを調べ、プランの詳細も調べて教えて"
+    await clean_console(team.run_stream(task=task))
 
-入力するタスクの例は以下です。
-```
-ユーザーID 1234 の人の加入しているプランについて、詳細を教えて
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 コンソールに経過や Azure ログが出力されます。
 (※見やすさについては準備中)\
 以下のような最終回答が表示されていればOKです。
-```
-出力例 (※Update予定)
-```
+![alt text](image31.png)
 
 ## 演習4-3 : chainlit による UI 構築
 今回作成する UI は [Chainlit](https://docs.chainlit.io/get-started/overview) を採用しています。pythhon で LLM を用いたチャット UI を手軽に構築できるフレームワークです。
 
 UI を記述する際、先ほどの実行部分のコードは不要なのでコメントアウトしましょう。
 ``` python
-# task = input("タスクを入力してください：")
-# await clean_console(team.run_stream(task=task))
+"""
+async def main():
+    task = "ユーザーID 1234 の人の加入しているプランを調べ、プランの詳細も調べて教えて"
+    await clean_console(team.run_stream(task=task))
+
+if __name__ == "__main__":
+    asyncio.run(main())
+"""
 ```
 
 1. UI 部分を記述
@@ -206,11 +209,11 @@ async def main(message: cl.Message) -> None:
 ```
 
 ここまでで、コーディングは終了です。`chainlit app.py run -w`
-を実行すると、既定では `localhost:8000` で UI が表示されます。
+を実行すると、既定では `http://localhost:8000` で UI が表示されます。
 
 2. タスクの実行
 
-ブラウザ上で `localhost:8000` にアクセスし、タスクを入力してみましょう。
+ブラウザ上で `http://localhost:8000` にアクセスし、タスクを入力してみましょう。
 ```
 ユーザーID 1234 の人の加入しているプランについて、詳細を教えて
 ```

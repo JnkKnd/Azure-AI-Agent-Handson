@@ -1,5 +1,6 @@
 import json
 import os
+import asyncio
 import chainlit as cl
 from dotenv import load_dotenv
 from autogen_agentchat.teams import SelectorGroupChat
@@ -80,8 +81,6 @@ team = SelectorGroupChat(
     allow_repeated_speaker=False,
 )
 
-
-# task = "2025年おすすめの旅行先を推薦してください。"
 async def clean_console(stream):
     async for message in stream:
         if hasattr(message, "source") and hasattr(message, "content"):
@@ -93,6 +92,14 @@ async def clean_console(stream):
             ]:
                 print(f"\n---------- {message.source} ----------")
                 print(message.content)
+"""
+async def main():
+    task = "ユーザーID 1234 の人の加入しているプランを調べ、プランの詳細も調べて教えて"
+    await clean_console(team.run_stream(task=task))
+
+if __name__ == "__main__":
+    asyncio.run(main())
+"""
 
 @cl.on_message
 async def main(message: cl.Message) -> None:
