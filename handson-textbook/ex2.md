@@ -147,6 +147,8 @@ ACCOUNT_KEY= <Cosmos DB の アカウントキー>
 
 [contract_lookup_agent.ipynb](../single-agent/contract_lookup_agent.ipynb)
 
+※ Connection Aborted といったエラーが出た場合は、もう一度実行を試してみてください。
+
 <br>
 
 ## 次へ
