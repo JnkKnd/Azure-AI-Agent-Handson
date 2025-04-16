@@ -6,13 +6,6 @@
 4. [AutoGen でのマルチエージェント実装(後編)](ex4.md)
 5. [マルチエージェントの実装における考慮点](ex5.md)
 
-## ハンズオンのゴール
-### 構成図
-![alt text](../images/image01.png)
-
-### 構築する UI のイメージ
-![alt text](../images/multiagent.gif)
-
 ## 演習 0-1 : 開発環境の確認
 - 開発環境の確認
   - VS Code での python 環境の確認
