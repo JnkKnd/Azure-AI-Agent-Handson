@@ -8,7 +8,7 @@
 ### 作成したエージェントをモジュールとしてインポート
 1. agents ディレクトリと同じ階層に app.py を作成してください
 1. 各種必要な AutoGen のモジュールをインポートします
-1. app.py の先頭に以下を記述してください。これ以降のコードは下に足していってください。
+1. app.py の先頭に以下を記述してください。これ以降コードをコピペする際は、最下部に追記していってください。
 ```　python
 import json
 import os
@@ -42,6 +42,9 @@ AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
 ```
 
 6. LLM クライアントの定義
+
+※ 今回は AutoGen のバージョンを 0.4.7 に指定しているため、autogen_ext.models.openai モジュールの [AzureOpenAIChatCompletionClient](https://microsoft.github.io/autogen/0.4.7/reference/python/autogen_ext.models.openai.html#autogen_ext.models.openai.AzureOpenAIChatCompletionClient) を使っていますが、執筆時最新の AutoGen 0.5系の場合は [AzureAIChatCompletionClient](https://microsoft.github.io/autogen/stable/reference/python/autogen_ext.models.azure.html#module-autogen_ext.models.azure) を用います。
+
 ```python
 aoai_client = AzureOpenAIChatCompletionClient(
     azure_deployment=DEPLOYMENT_NAME,
@@ -53,6 +56,16 @@ aoai_client = AzureOpenAIChatCompletionClient(
 ```
 
 7. Selector Group Chat 作成時のプロンプト指定
+
+Selector Group Chat 作成時に指定するプロンプトとして以下を定義します。プロンプトには次のようなプレースホルダーを使用することができます：​
+
+|プレースホルダー|説明|
+|---------------|---|
+|{roles}|各エージェントの名前とその説明が挿入されます。|
+|{participants}|参加しているエージェントの名前のリストが挿入されます。|
+|{history}|これまでの会話履歴が挿入されます。​|
+
+
 ```python
 selector_prompt = """あなたのタスクは、会話の状況に応じて次のタスクを実行する role を選択することです。
 ## 次の話者の選択ルール
@@ -76,6 +89,9 @@ selector_prompt = """あなたのタスクは、会話の状況に応じて次�
 ```
 
 8. 各エージェントに、モデルクライアントを引数に渡す
+
+演習3で作成した各エージェントをモジュールとして読み込み、モデルクライアントの定義を引数に渡すことで各エージェントを作成します。
+
 ```python
 planner = planner_agent(aoai_client)
 product_search = product_search_agent(aoai_client)
@@ -84,7 +100,7 @@ summary = summary_agent(aoai_client)
 ```
 
 9. マルチエージェントの終了条件の定義\
-AutoGen には 無限ループを防止するため [8 つの組み込みの終了条件](https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/termination.html#)が定義されています。終了条件は以下のように OR 条件で指定できるのが便利です。 \
+演習3で触れたように、 AutoGen には 無限ループを防止するため [8 つの組み込みの終了条件](https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/termination.html#)が定義されています。終了条件は以下のように OR 条件で指定できるのが便利です。 \
 今回は「応答に "TERMINATE" が含まれる」もしくは「最大生成メッセージ数が 10」という条件にしています。
 
 ```python
@@ -129,7 +145,7 @@ async def clean_console(stream):
 
 2. 実行部分 
 
-`run_stream(task=task)` のメソッドで、Selector Group Chat にユーザーからのタスクが渡されます。
+[`run_stream(task=task)`](https://microsoft.github.io/autogen/0.4.7/reference/python/autogen_agentchat.teams.html#autogen_agentchat.teams.BaseGroupChat.run_stream) のメソッドで、Selector Group Chat にユーザーからのタスクが渡されます。
 
 ``` python
 async def main():
@@ -140,13 +156,12 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-コンソールに経過や Azure ログが出力されます。
-(※見やすさについては準備中)\
-以下のような最終回答が表示されていればOKです。
-![alt text](image31.png)
+コンソールに経過や Azure ログが出力されます。\
+少し見づらいですが、以下のような最終回答が表示されていればOKです。
+![alt text](../images/image41.png)
 
 ## 演習4-3 : chainlit による UI 構築
-今回作成する UI は [Chainlit](https://docs.chainlit.io/get-started/overview) を採用しています。pythhon で LLM を用いたチャット UI を手軽に構築できるフレームワークです。
+今回作成する UI は [Chainlit](https://docs.chainlit.io/get-started/overview) を採用しています。python で LLM を用いたチャット UI を手軽に構築できるフレームワークです。
 
 UI を記述する際、先ほどの実行部分のコードは不要なのでコメントアウトしましょう。
 ``` python
@@ -165,7 +180,7 @@ if __name__ == "__main__":
 `@cl.on_message` が chainlit でメッセージが送信されたときに実行される関数を定義します。今回は非常に簡易的な記述をしていますが、チャットの開始、終了、再開時の処理や、スタート画面のカスタマイズ、ボタンの表示などもできます。
 
 以下の内容を、ファイルの下部に追加してください。\
-このコードでは `run_stream`を実行し、そのメッセージの内容を次の場合わけで表示させています。
+このコードでは `run_stream` を実行し、そのメッセージの内容を次の場合わけで表示させています。
 
 | メッセージの内容 | 値 |  UI 表示内容 | 
 | --- | --- | --- | 
@@ -215,12 +230,15 @@ async def main(message: cl.Message) -> None:
 
 ブラウザ上で `http://localhost:8000` にアクセスし、タスクを入力してみましょう。
 ```
-ユーザーID 1234 の人の加入しているプランについて、詳細を教えて
+ユーザーID 1234 の人の加入しているプランを調べ、プランの詳細も調べて教えて
 ```
 
-次のように、Planner Agent によって計画が立てられ、計画に沿って各エージェントにメッセージの受け渡しがされ、適切な Tool Call がされ、最終回答が得られるような挙動となればOKです。
+次のように、Planner Agent によって計画が立てられ、計画に沿って各エージェントにメッセージの受け渡しがされ、適切な Tool Call がされ、最終回答が得られるような挙動となればOKです。他のタスクを試しても構いませんが、各エージェントのプロンプトは調整しておりませんので、各自任意でカスタマイズしてみてください。
+
 ![alt text](../images/multiagent.gif) \
 gifが見づらい場合は[こちらの動画](../images/multiagent.mp4)をご覧ください。
+
+ブラウザタブを閉じても、今回の実装の場合はサーバーサイドで非同期処理を実行しているため、コンソール上では処理が続いてしまいます。ターミナルで `Ctrl + C` で終了させてください。
 
 <br>
 
