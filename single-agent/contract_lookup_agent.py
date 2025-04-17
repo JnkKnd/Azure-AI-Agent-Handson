@@ -117,34 +117,34 @@ agent = project_client.agents.create_agent(
 print(f"agent を新規作成しました。AGENT_ID: {agent.id}")
 
 thread = project_client.agents.create_thread()
-messages = project_client.agents.list_messages(thread_id=thread.id)
 
-user_message = input("タスクを入力してください：")
+while True:
+    user_message = input("タスクを入力してください（終了するには 'exit' と入力）：")
+    if user_message.strip().lower() == "exit":
+        break
 
-message = project_client.agents.create_message(
-    thread_id=thread.id,
-    role="user",
-    content=user_message,
-)
-run = project_client.agents.create_and_process_run(
-    thread_id=thread.id, agent_id = agent.id
-)
-print(f"Run finished with status: {run.status}")
+    message = project_client.agents.create_message(
+        thread_id=thread.id,
+        role="user",
+        content=user_message,
+    )
+    run = project_client.agents.create_and_process_run(
+        thread_id=thread.id, agent_id=agent.id
+    )
+    print(f"Run finished with status: {run.status}")
 
-if run.status == "failed":
-    print(f"Run failed: {run.last_error}")
+    if run.status == "failed":
+        print(f"Run failed: {run.last_error}")
+        continue
 
-# 最新のテキストレスポンスを取得
-messages = project_client.agents.list_messages(thread_id=thread.id)
-response = None
-for data_point in reversed(messages.data):
-    last_message_content = data_point.content[-1]
-    if isinstance(last_message_content, MessageTextContent):
-        # print(f"{data_point.role}: {last_message_content.text.value}")
-        response = last_message_content.text.value
-if response is None:
-    response = "エージェントからの応答が得られませんでした。"
-print(response)
+    # 最新のテキストレスポンスを取得
+    messages = project_client.agents.list_messages(thread_id=thread.id)
+    last_msg = messages.get_last_text_message_by_role("assistant")
+    response = last_msg.text.value if last_msg else None
+    if response is None:
+        response = "エージェントからの応答が得られませんでした。"
+    print(response)
 
 project_client.agents.delete_thread(thread_id=thread.id)
 project_client.agents.delete_agent(agent_id=agent.id)
+print("Agent と Thread を削除しました。")
