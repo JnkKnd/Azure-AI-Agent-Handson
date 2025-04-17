@@ -29,7 +29,7 @@ def agent_name(model_client: ChatCompletionClient) -> AssistantAgent:
     return agent
 ```
 
-また、今回のハンズオンでは **Selector Group Chat** でマルチエージェントを実装していきます。**Selector Group Chat** では生成 AI モデル（LLMなど）が共有コンテキストに基づいて次のスピーカーを選択することで、動的でコンテキストを認識したコラボレーションが可能になります。
+また、今回のハンズオンでは[ **Selector Group Chat** ](https://microsoft.github.io/autogen/0.4.7/reference/python/autogen_agentchat.teams.html#autogen_agentchat.teams.SelectorGroupChat)でマルチエージェントを実装していきます。[**Selector Group Chat**](https://microsoft.github.io/autogen/0.4.7/reference/python/autogen_agentchat.teams.html#autogen_agentchat.teams.SelectorGroupChat) では生成 AI モデル（LLMなど）が共有コンテキストに基づいて次のスピーカーを選択することで、動的でコンテキストを認識したコラボレーションが可能になります。
 
 - Selector による中央集権的なエージェント割り振り
 - 遷移先の決定: LLM+ルール
@@ -77,7 +77,10 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 ```
 6. 次に、Azure AI Agent SDK の際に記述した、契約管理DBを検索する関数を定義します
+
 7. 下記の contract_lookup 関数を追加
+※データをハードコードした関数になっていますが、Cosmos DB から取得する関数でも問題ございません。
+
 ```python
 def contract_lookup(user_id: int)->str:
     # 便宜上ハードコードしています。Cosmos DB から取得する関数でも構いません。
@@ -153,7 +156,7 @@ def send_email(customer: str, staff_email: str, inquiry: str) -> str:
         print(f"エラー: {err}")
         return json.dumps({"status": "メールで通知に失敗しました"})
 ```
-9. 次に AutoGen の AssistantAgent クラスで使えるように tools の定義を行います。この記述方法は Azure AI Agent SDK と異なる点です。今回は2つしか関数を定義していませんが、下記のような形に倣って追加することも可能です。
+9. 次に AutoGen の AssistantAgent クラスで使えるように tools の定義を行います。この記述方法は Azure AI Agent SDK と異なる点です。今回は2つしか関数を定義していませんが、下記のような形に倣って自分で追加することも可能です。
 ``` python
 tools = [contract_lookup, send_email]
 ```
@@ -187,7 +190,7 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 ```
 
-3. Azure AI Search のクライアント定義
+3. 環境変数の読み込みと Azure AI Search のクライアント定義
 ```python
 load_dotenv()
 AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
@@ -254,11 +257,13 @@ def product_search_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 このエージェントは、エージェント同士の回答を要約して、最終回答を生成するエージェントです。
 1. summary_agent.py ファイルを新規作成
 
-AutoGen のマルチエージェント実装では、タスクの終了条件を指定する必要があります。
+AutoGen のマルチエージェント実装では、タスクの終了条件を指定する必要があります。 [8 つの組み込みの終了条件](https://microsoft.github.io/autogen/stable/user-guide/agentchat-user-guide/tutorial/termination.html#)があり、今回はタスクが完了したと判定場合に "TERMINATE" という文字列を生成させることで終了判定をします。従って、summary_agent.py の要件は以下です。
+
 - 要約エージェントはマルチエージェントの会話の終了条件となる、`"TERMINATE"`という文字列を最後に生成させます
 - 要約エージェントでは、tool の呼び出しは行いません
+- これまでの会話履歴を要約し、最終回答としてまとめます
 
-2. 要約エージェントはプロンプトを工夫して自分で実装してみてください。ひな形は下記です。必要に応じて Copilot などをご活用ください。
+2. ここで、要約エージェントはプロンプトを工夫して自分で実装してみてください。ひな形は下記です。必要に応じて Copilot などをご活用ください。
 
 
 ```python
@@ -300,9 +305,9 @@ def summary_agent(model_client: ChatCompletionClient) -> AssistantAgent:
 
 
 ## 演習 3-4 planner_agent.py の作成
-ここまでで、DBを検索するエージェント、商品データを検索するエージェント、要約エージェントができました。
+ここまでで、契約DBを検索するエージェント、商品データを検索するエージェント、要約エージェントができました。
 次に、ユーザーからの入力に対して、タスクを完了するために必要な計画を立てる planner agent を作成します。
-システムプロンプトが重要になります。
+ここでは特に、システムプロンプトが重要になります。どんなエージェントが、それぞれどのような役割で、何ができるエージェントなのかを記述します。
 
 1. planner_agents.py ファイルを新規作成し、以下を記述してください
 ```python
