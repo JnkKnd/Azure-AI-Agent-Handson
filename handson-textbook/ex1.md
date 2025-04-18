@@ -123,9 +123,9 @@ AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
 5. 「Azure Blob Storage」の構成画面の入力は以下を参考にしてください。入力後、次へを選択してください。
 
 
-> - ストレージアカウント：本演習の1-1-2で利用した ストレージ を選択
-> - BLOBコンテナー：sampledata を選択
-> - 解析モード：Markdown を選択
+- ストレージアカウント：本演習の1-1-2で利用した ストレージ を選択
+- BLOBコンテナー：sampledata を選択
+- 解析モード：Markdown を選択
 
    ![image01-24](../images/image01-24.png)
 
@@ -259,7 +259,11 @@ BING_CONNECTION_NAME= <Bing 接続名> のようにメモをしてください�
 
 ### .env ファイルの設定
 
-以下のように `.env` ファイルの環境変数に接続名を指定してください：
+以下のように `.env` ファイルの環境変数に接続名をこれまでのメモを活用しながら、指定してください。
+
+📄 [.env-sample](../.env-sample)
+
+
 ```python
 PROJECT_CONNECTION_STRING = <プロジェクトの接続文字列>
 AI_SEARCH_ENDPOINT＝ <Azure AI Search のエンドポイント>
