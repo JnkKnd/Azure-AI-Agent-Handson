@@ -22,11 +22,12 @@
 ※ シナリオはあくまでサンプルであり、本ハンズオンは各エージェント実装に重点を置いています。
 
 ### シングルエージェントの構成図
+#### 保険商品案内エージェント
+![alt text](images/image-002.png)
+
 #### 契約管理エージェント
 ![alt text](images/image-001.png)
 
-#### 保険商品案内エージェント
-![alt text](images/image-002.png)
 
 ### マルチエージェントの構成図
 ![alt text](images/image01.png)
