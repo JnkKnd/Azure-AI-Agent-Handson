@@ -9,5 +9,6 @@ autogen-core==0.4.7
 autogen-agentchat==0.4.7
 autogen-ext[openai]==0.4.7
 
+ipykernel==6.29.5
 python-dotenv==1.1.0
 chainlit==2.4.400
