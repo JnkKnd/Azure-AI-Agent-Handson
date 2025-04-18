@@ -1,4 +1,4 @@
-# 演習 5: エージェント実装における考慮点と Semantic Kernel でのマルチエージェント実装
+# 演習 5: エージェント実装における考慮点
 
 ## ハンズオンパートのまとめ
 演習4までで AutoGen を用いたマルチエージェント実装は終了です。お疲れ様でした。\
@@ -19,9 +19,12 @@ AutoGen はいかがでしょうか。
 ![alt text](../images/image51.png)
 
 Semantic Kernel のハンズオンは次の Qiita のリンクにございます。
-
 ### [Semantic Kernel Agent Frameworkでマルチエージェント実装手法を解説](https://qiita.com/matayuuu/items/56de2b699bb5b38aac5f)
 
+
+さらに [Developers Seminar の YouTube動画](https://youtu.be/vaBspzSug1A) にて解説しているとおり、フレームワークは下記のように比較できます。
+
+![alt text](../images/image52.png)
 
 
 ※以下準備中 TBU

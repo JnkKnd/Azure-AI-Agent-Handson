@@ -2,7 +2,7 @@ from autogen_agentchat.agents import AssistantAgent
 
 
 def planner_agent(model_client) -> AssistantAgent:
-    return AssistantAgent(
+    agent = AssistantAgent(
         name="PlannerAgent",
         description="与えられたタスクを完了するためのサブタスクを計画する Agent。計画を立てるだけでサブタスクの実行は行いません。",
         model_client=model_client,
@@ -31,3 +31,5 @@ def planner_agent(model_client) -> AssistantAgent:
 最後に Summary Agent にこれまでの会話履歴の要約を依頼します。
 """,
     )
+    
+    return agent 
