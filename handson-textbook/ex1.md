@@ -54,12 +54,14 @@ Azure AI Search からストレージにアクセスするには、RBAC（ロー
 以下の手順に従って、行ってください：
 
 1. Azure Portal を開き、 Azure AI Search をデプロイする。
+
    ![image01-28](../images/image01-28.png)
    
 > **手順**
 > - サービス名は任意の名前にしてください
 > - Azure AI Search の価格プランは **Basic** を利用してください　※ベクトル検索を使用するため。
 > - リージョンは **Azure AI Foundry Hub** と同一にしてください
+
    ![image01-30](../images/image01-30.png)
    
 2. RBAC（ロールベースアクセス制御）の手動設定
@@ -71,11 +73,15 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 設定手順：  
 1. Azure Portal > ストレージアカウント > 「アクセス制御（IAM）」へ移動
 2. 「ロールの割り当て」から「Storage Blob データ閲覧者」を選択
+
    ![image01-10](../images/image01-10.png)
    ![image01-11](../images/image01-11.png)
+   
 3. 検索フィルタから Azure AI Search の マネージドID を選択
 4. 「マネージド ID」リストから、Azure AI Search のリソース名（例：aisearch-xxx）を検索して選択
+
    ![image01-12](../images/image01-12.png)
+   
 5. すべての設定を確認した後、「**レビューと割り当て**」をクリックして、設定を完了。
 
 これで、Azure AI Search がストレージアカウントにアクセスできるようになります。
@@ -89,15 +95,20 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 手順：
 1. Azure Portal を開く。
 2. リソースグループを展開。
+
    ![image01-16](../images/image01-16.png)
+   
 3.「データのインポートとベクター化」を選択
    Azure AI Search のリソースに移動し、上部にあるデータのインポートとベクター化を選択してください。
+   
    ![image01-05](../images/image01-05.png)
+   
 4. データソースで「Azure Blob Storage」を選択
 5. 「Azure Blob Storage」の構成画面の入力は以下を参考にしてください。入力後、次へを選択してください。
 > - ストレージアカウント：本演習の1-1-2で利用した ストレージ を選択
 > - BLOBコンテナー：sampledata を選択
 > - 解析モード：Markdown を選択
+
    ![image01-24](../images/image01-24.png)
 
 6. 「テキストをベクトル化する」の手順に移り、以下の設定を行った後「次へ」を選択してください。
@@ -106,6 +117,7 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 > - Azure OpenAI Service：ex0で作成したリソースを使用
 > - モデルデプロイ：ex0で作成した text-embedding-ada-002 を使用
 > - Azure OpenAI Serviceに接続すると、アカウントに追加料金が発生することを承認します。 をチェックする。
+
    ![image01-26](../images/image01-26.png)
    
 7. 詳細設定は、既存のまま「次へ」を選択してください
