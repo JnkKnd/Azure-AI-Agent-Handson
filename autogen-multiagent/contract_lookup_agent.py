@@ -1,11 +1,14 @@
 import requests
 import json
 import os
+from dotenv import load_dotenv
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import ChatCompletionClient
 
+load_dotenv()
+LOGIC_APPS = os.getenv("LOGIC_APPS")
 
-async def contract_lookup(user_id: int)->str:
+def contract_lookup(user_id: int)->str:
     # 便宜上一旦ハードコードしています
     """
     ユーザーIDに基づいてユーザー情報を JSON 文字列で返す
@@ -43,7 +46,7 @@ async def contract_lookup(user_id: int)->str:
     return json.dumps({"user_info": user_info})
 
 
-async def send_email(customer: str, staff_email: str, inquiry: str) -> str:
+def send_email(customer: str, staff_email: str, inquiry: str) -> str:
     """
     お客様から担当者のメールアドレスにお問い合わせがあったことを通知
 
@@ -66,7 +69,7 @@ async def send_email(customer: str, staff_email: str, inquiry: str) -> str:
         "staff_email": staff_email
     }
 
-    endpoint_url = os.getenv("LOGIC_APPS")
+    endpoint_url = LOGIC_APPS
 
     try:
         response = requests.post(endpoint_url, headers=headers, data=json.dumps(payload))
