@@ -27,26 +27,41 @@
 
 手順：
 
-1. Azure Portal にログイン。
-2. Azure AI Foundry Hub を作成したときに一緒に作成された Storage Account を開く  
-   ![image01-01](../images/image01-01.png)
-3. `sampledata` という名前の Blob コンテナ を作成
-   ![image01-02](../images/image01-02.png)
-4. `product_info.md` をそのコンテナにアップロードする
-   ![image01-03](../images/image01-03.png)
+1. Azure Portal を開く。
+2. リソースグループを展開。
+   ![image01-16](../images/image01-16.png)
+   
+3. ex.0で Azure AI Foundry Hub を作成したリソースグループを開く。
+4. Azure AI Foundry Hub を作成したときに一緒に作成された Storage Account を開く。
+5. 左のタブの データストレージ を展開し、コンテナー を展開する。
+   ![image01-17](../images/image01-17.png)
+   
+6. ＋コンテナ から `sampledata` という名前の Blob コンテナ を作成。
+7. コンテナーに戻り、 `sampledata` を展開する。
+   ![image01-18](../images/image01-18.png)
+   
+8. アップロードから ファイルの参照を展開。
+   ![image01-19](../images/image01-19.png)
+   
+9. 事前にダウンロードした`product_info.md` をにアップロードする。
+
+この手順でサンプルデータのアップロードを完了できます。
 
 ---
 
-### 3. Azure AI Search でインデックスを作成
+### 3.  RBAC（ロールベースアクセス制御）の手動
+Azure AI Search からストレージにアクセスするには、RBAC（ロールベースアクセス制御）の手動設定が必要です。
+以下の手順に従って、行ってください：
 
-Azure AI Search のポータルで以下の手順に従ってインデックスを作成します：
-
-1. Azure AI Search をデプロイする
-   ![image01-04](../images/image01-04.png)
-> **注意事項：**  
-> - Azure AI Search の価格プランは **Free** を利用可能  
+1. Azure Portal を開き、 Azure AI Search をデプロイする。
+   ![image01-28](../images/image01-28.png)
+   
+> **手順**
+> - サービス名は任意の名前にしてください
+> - Azure AI Search の価格プランは **Basic** を利用してください　※ベクトル検索を使用するため。
 > - リージョンは **Azure AI Foundry Hub** と同一にしてください
-
+   ![image01-30](../images/image01-30.png)
+   
 2. RBAC（ロールベースアクセス制御）の手動設定
 
 Azure AI Search からストレージにアクセスするには、以下の設定が必要です：
@@ -66,12 +81,35 @@ Azure AI Search からストレージにアクセスするには、以下の設�
 これで、Azure AI Search がストレージアカウントにアクセスできるようになります。
 この設定により、検索インデックス作成時に必要なストレージデータにアクセス可能となり、エージェントや他のアプリケーションから適切にデータを操作できます。 
 
+
+### 4. Azure AI Search でインデックスを作成
+
+ここからは Azure AI Search でインデックスを作成する方法を解説します。
+
+手順：
+1. Azure Portal を開く。
+2. リソースグループを展開。
+   ![image01-16](../images/image01-16.png)
 3.「データのインポートとベクター化」を選択
    Azure AI Search のリソースに移動し、上部にあるデータのインポートとベクター化を選択してください。
    ![image01-05](../images/image01-05.png)
-4. データソースで「Azure Blob Storage」を選択  
-5. 先ほどアップロードした `product_info.md` を格納したストレージとコンテナを指定  
-   ![image01-06](../images/image01-06.png)
+4. データソースで「Azure Blob Storage」を選択
+5. 「Azure Blob Storage」の構成画面の入力は以下を参考にしてください。入力後、次へを選択してください。
+> - ストレージアカウント：本演習の1-1-2で利用した ストレージ を選択
+> - BLOBコンテナー：sampledata を選択
+> - 解析モード：Markdown を選択
+   ![image01-24](../images/image01-24.png)
+
+6. 「テキストをベクトル化する」の手順に移り、以下の設定を行った後「次へ」を選択してください。
+> - Kind：Azure OpenAI を選択
+> - サブスクリプション：本ハンズオンで使用しているサブスクリプションを選択
+> - Azure OpenAI Service：ex0で作成したリソースを使用
+> - モデルデプロイ：ex0で作成した text-embedding-ada-002 を使用
+> - Azure OpenAI Serviceに接続すると、アカウントに追加料金が発生することを承認します。 をチェックする。
+   ![image01-26](../images/image01-26.png)
+   
+7. 詳細設定は、既存のまま「次へ」を選択してください
+8. 「レビューと作成」を選択すれば、完了です。
 
 
 ## 演習 1-2 Grounding with Bing Search の作成  
