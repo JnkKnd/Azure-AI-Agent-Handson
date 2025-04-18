@@ -28,30 +28,33 @@
 
 手順：
 
-1. Azure Portal を開いてください。
+1. Azure Portal > 今回作成したリソースグループ > AI Search
 2. リソースグループを展開してください。
    ![image01-16](../images/image01-16.png)
    
 3. ex.0で Azure AI Foundry Hub を作成したリソースグループを選択してください。
 4. Azure AI Foundry Hub を作成したときに一緒に作成された [Storage Account] を選択してください。
 5. 左のタブの [データストレージ] を展開し、[コンテナー] を展開します。
+
    ![image01-17](../images/image01-17.png)
    
 6. ＋コンテナ から `sampledata` という名前の Blob コンテナ を作成します。
-7. コンテナーに戻り、 `sampledata` を展開してください。
+7. 作成した `sampledata` のコンテナを展開してください。
+
    ![image01-18](../images/image01-18.png)
    
 8. アップロードから ファイルの参照を展開してください。
+
    ![image01-19](../images/image01-19.png)
    
-9. 事前にダウンロードした`product_info.md` をにアップロードする。
+9. 事前にダウンロードした`product_info.md` をにアップロードしてください。
 
 この手順でサンプルデータのアップロードを完了できます。
 
 ---
 
 ### 3. Azure AI Search の作成
-Azure AI Search からストレージにアクセスするには、RBAC（ロールベースアクセス制御）の手動設定が必要です。
+Azure AI Search からストレージにアクセスするには、RBAC（ロールベースアクセス制御）の手動設定が必要です。\
 まずは以下の手順に従って、Azure AI Search の作成を行ってください：
 
 1. Azure Portal を開き、 Azure AI Search をデプロイします。
@@ -65,39 +68,52 @@ Azure AI Search からストレージにアクセスするには、RBAC（ロー
 
    ![image01-30](../images/image01-30.png)
    
-2. Azure AI Search のエンドポイントとキーをメモしてください。※envファイルにて使用します。
-
-AI_SEARCH_ENDPOINT＝ <Azure AI Search のエンドポイント>
-
+2. Azure AI Search のエンドポイントとキーをメモしてください。\
+※.envファイルにて使用します。\
+AI_SEARCH_ENDPOINT＝ <Azure AI Search のエンドポイント> \
 AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
 
 エンドポイントとキーの取得手順は以下を参照ください。
 
  手順：
  作成された Azure AI Search を展開してください。
+ 
  - エンドポイント：概要 の [URL] 
     ![image01-38](../images/image01-38.png)
- - キー：[設定] を展開。[キー」から [プライマリ管理者キー] を選択。
+
+ - キー：[設定] を展開。[キー]から [プライマリ管理者キー] を選択。
     ![image01-39](../images/image01-39.png)
     
 3. RBAC（ロールベースアクセス制御）の手動設定
+
 ここからはAzure AI Search からストレージにアクセスするために必要になる RBAC（ロールベースアクセス制御）の手動設定 を行います。
 
 対象：**Azure AI Foundry Hub と同時に作成された Storage Account**
 
-設定手順：  
-1. Azure Portal > ストレージアカウント > 「アクセス制御（IAM）」へ移動
-2. 「ロールの割り当て」から「Storage Blob データ閲覧者」を選択
+設定手順： 
+1. Azure Portal >　今回のハンズオンで作成したリソースグループ >　Azure AI Search リソース > 左のタブの設定項目内の「ID」に移動
+
+2. 「システム割り当て済み」タブの、状態を「オン」にし、上部の保存をクリック\
+確認のポップアップが出た場合は、「確認」を選択してください。
+
+   ![alt text](../images/image01-41.png)
+
+3. Azure Portal >　今回のハンズオンで作成したリソースグループ > ストレージアカウント > 「アクセス制御（IAM）」へ移動
+4. 「このリソースへのアクセス権の付与」パネルにある「ロールの割り当ての追加」を選択
 
    ![image01-10](../images/image01-10.png)
+
+5. 職務ロールの検索ボックスに「「ストレージ Blob データ閲覧者」を入れて、選択したうえで、「次へ」を押下
+
    ![image01-11](../images/image01-11.png)
    
-3. 検索フィルタから Azure AI Search の マネージドID を選択
-4. 「マネージド ID」リストから、Azure AI Search のリソース名（例：aisearch-xxx）を検索して選択
+6. 「アクセスの割り当て先」を「マネージドID」にチェックし、その下の「＋メンバーを選択する」を押下
+
+7. 右側のパネルの「マネージド ID」リストで「すべてのシステム割り当てマネージドID」を選び、「選択」の欄では Azure AI Search のリソース名を検索して選択し、下部の「選択」を押下
 
    ![image01-12](../images/image01-12.png)
-   
-5. すべての設定を確認した後、「**レビューと割り当て**」をクリックして、設定を完了。
+
+8. すべての設定を確認した後、「**レビューと割り当て**」をクリックして、設定を完了。
 
 これで、Azure AI Search がストレージアカウントにアクセスできるようになります。
 この設定により、検索インデックス作成時に必要なストレージデータにアクセス可能となり、エージェントや他のアプリケーションから適切にデータを操作できます。 
@@ -108,34 +124,30 @@ AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
 ここからは Azure AI Search でインデックスを作成する方法を解説します。
 
 手順：
-1. Azure Portal を開く。
-2. リソースグループを展開。
-
-   ![image01-16](../images/image01-16.png)
+1. Azure Portal > 今回作成したリソースグループ > Azure AI Search に移動
    
-3.「データのインポートとベクター化」を選択
-   Azure AI Search のリソースに移動し、上部にあるデータのインポートとベクター化を選択してください。
-   
+2. 「データのインポートとベクター化」を選択
+   Azure AI Search のリソースに移動し、上部にあるデータのインポートとベクター化を選択してください。\
    ![image01-05](../images/image01-05.png)
    
-4. データソースで「Azure Blob Storage」を選択
+3. データソースで「Azure Blob Storage」を選択
+   ![alt text](../images/image01-42.png)
 
 5. 「Azure Blob Storage」の構成画面の入力は以下を参考にしてください。入力後、次へを選択してください。
 
+   > - ストレージアカウント：本演習の1-1-2で利用した ストレージ を選択
+   > - BLOBコンテナー：sampledata を選択
+   > - 解析モード：Markdown を選択 
 
-- ストレージアカウント：本演習の1-1-2で利用した ストレージ を選択
-- BLOBコンテナー：sampledata を選択
-- 解析モード：Markdown を選択
-
-   ![image01-24](../images/image01-24.png)
+    ![image01-24](../images/image01-24.png)
 
 6. 「テキストをベクトル化する」の手順に移り、以下の設定を行った後「次へ」を選択してください。
 
 手順：
 - Kind：Azure OpenAI を選択
  - サブスクリプション：本ハンズオンで使用しているサブスクリプションを選択
- - Azure OpenAI Service：ex0で作成したリソースを使用
- - モデルデプロイ：ex0で作成した text-embedding-ada-002 を使用
+ - Azure OpenAI Service：演習0で作成したリソースを使用
+ - モデルデプロイ：演習0で作成した text-embedding-ada-002 を使用
  - 認証の種類：APIキー
  - Azure OpenAI Serviceに接続すると、アカウントに追加料金が発生することを承認します。 をチェックする。
 
@@ -164,17 +176,16 @@ AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
 ここからは Azure AI Search でインデックスを作成する方法を解説します。
 
 手順：
-1. Azure Portal を開く。
-2. リソースグループを展開。
-
-   ![image01-16](../images/image01-16.png)
+1. Azure Portal を開き、[リソースグループ] を展開。ここまで使用している該当のリソースグループを選択してください。
+ ![image01-16](../images/image01-16.png)
    
-3.「データのインポートとベクター化」を選択
+3. 「データのインポートとベクター化」を選択
    Azure AI Search のリソースに移動し、上部にあるデータのインポートとベクター化を選択してください。
    
-   ![image01-05](../images/image01-05.png)
+   ![image01-05](../images/image01-42.png)
    
 4. データソースで「Azure Blob Storage」を選択
+   ![image01-42](../images/image01-05.png)
 
 5. 「Azure Blob Storage」の構成画面の入力は以下を参考にしてください。入力後、次へを選択してください。
 
@@ -187,13 +198,13 @@ AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
 
 6. 「テキストをベクトル化する」の手順に移り、以下の設定を行った後「次へ」を選択してください。
 
-手順
-- Kind：Azure OpenAI を選択
-- サブスクリプション：本ハンズオンで使用しているサブスクリプションを選択
-- Azure OpenAI Service：ex0で作成したリソースを使用
-- モデルデプロイ：ex0で作成した text-embedding-ada-002 を使用
-- 認証の種類：APIキー
-- Azure OpenAI Serviceに接続すると、アカウントに追加料金が発生することを承認します。 をチェックする。
+   手順
+   - Kind：Azure OpenAI を選択
+   - サブスクリプション：本ハンズオンで使用しているサブスクリプションを選択
+   - Azure OpenAI Service：ex0で作成したリソースを使用
+   - モデルデプロイ：ex0で作成した text-embedding-ada-002 を使用
+   - 認証の種類：APIキー
+   - Azure OpenAI Serviceに接続すると、アカウントに追加料金が発生することを承認します。 をチェックする。
 
    ![image01-32](../images/image01-32.png)
    
@@ -207,12 +218,12 @@ AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
    
 9. Azure AI Search のインデックス名をメモしてください。※envファイルにて使用します。
 
-INDEX_NAME = <インデックス名>
+   INDEX_NAME = <インデックス名>
 
-手順
-- Azure AI Searc のリソースから [検索管理] → [インデックス] を選択します。
-- 今回作成したインデックスの名前を取得できます。
-   ![image01-40](../images/image01-40.png)
+   インデックス名を取得する手順
+   - Azure AI Search のリソースから [検索管理] → [インデックス] を選択します。
+   - 今回作成したインデックスの名前を取得できます。
+      ![image01-40](../images/image01-40.png)
 
 
 
@@ -222,47 +233,47 @@ INDEX_NAME = <インデックス名>
 1. Azure Portal を開き、[リソースグループ] を展開。ここまで使用している該当のリソースグループを選択してください。
  ![image01-16](../images/image01-16.png)
    
-2. 「作成」から `Grounding with Bing Search` をデプロイしてください。
+2. 「作成」から `Grounding with Bing Search` 検索し、「作成」を選択してください。
 ![image01-35](../images/image01-35.png)
 
-手順：
-- 名前：任意の名前を設定してください
-- 価格レベル：Grounding with Bing Search ($35 per 1K transactions) を選択
-- ご契約条件を参照いただき、[上記通知を読み、理解しました。]にチェックを入れる
+   設定：
+   - 名前：任意の名前を設定してください
+   - 価格レベル：Grounding with Bing Search ($35 per 1K transactions) を選択
+   - ご契約条件を参照いただき、[上記通知を読み、理解しました。]にチェックを入れる
 
 3. 「確認と作成」でデプロイ完了
 ![image01-07](../images/image01-07.png)
 
-上記手順で Grounding with Bing Search の作成は完了です。
+   上記手順で Grounding with Bing Search の作成は完了です。
 
 ### プロジェクトに接続
 1. Azure Portal を開き、[リソースグループ] を展開。ここまで使用している該当のリソースグループを選択してください。
  ![image01-16](../images/image01-16.png)
  
-2. リソースの一覧から ex.0 で作成した Azure AI Projectを選択。
+2. リソースの一覧から演習0で作成した Azure AI Project を選択。
  ![image01-36](../images/image01-36.png)
 
 4. その後、[Launch Studio] からAzure Ai Foundryを起動。
  ![image01-37](../images/image01-37.png)
  
-5. 起動後、画面の右下にある [管理センター] を選択。
-![image01-13](../images/image01-13.png)
+5. 起動後、画面の右下にある [管理センター] を選択\
+   ![image01-13](../images/image01-13.png)
 
-6. 「新しい接続」を選択し、「Bing検索を使用したグラウンド」を追加。
-![image01-14](../images/image01-14.png)
-7. 管理画面に戻り、接続名を確認する。この追加方法の場合、既定でリソース名が接続名となります。
-BING_CONNECTION_NAME= <Bing 接続名> のようにメモをしてください。
-![image01-15](../images/image01-15.png)
+6. 「新しい接続」を選択し、「Bing検索を使用したグラウンド」を選択。Grounding with Bing Search リソースの一覧が表示されるため、今回作成したリソースを選択し「接続」を押下
+   ![image01-14](../images/image01-14.png)
+
+7. 管理画面に戻り、接続名を確認する。この追加方法の場合、既定でリソース名が接続名となります。\
+   BING_CONNECTION_NAME= <Bing 接続名> のようにメモをしてください。
+   ![image01-15](../images/image01-15.png)
 
  
 ## 演習1-3  動作確認
 
 ### .env ファイルの設定
 
-以下のように `.env` ファイルの環境変数に接続名をこれまでのメモを活用しながら、指定してください。
+以下のように `.env` ファイルの環境変数に接続名をこれまでのメモを活用しながら、追加してください。
 
 📄 [.env-sample](../.env-sample)
-
 
 ```python
 PROJECT_CONNECTION_STRING = <プロジェクトの接続文字列>
@@ -272,7 +283,9 @@ INDEX_NAME = <インデックス名>
 BING_CONNECTION_NAME= <Bing 接続名> #(例 agentdev04) 
 ```
 
-エージェントの作成からツールセットの登録、スレッドの実行までの手順は以下のノートブックから行ってください。
+ここまででリソースの準備ができました。次に
+エージェントの作成からツールセットの登録、スレッドの実行までを行います。
+手順は以下のノートブックから行ってください。
 
 📄[product_search_agent.ipynb](../single-agent/product_search_agent.ipynb)
 
