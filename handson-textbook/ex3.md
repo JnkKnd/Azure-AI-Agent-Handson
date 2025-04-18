@@ -60,122 +60,27 @@ AutoGenの他のマルチエージェントデザインパターンについて�
 4. 実行結果が UI 上に表示されます
 </details>
 
-## 演習 3-1 contract_lookup_agent.py の作成
-この手順では Azure AI Agent SDK を用いて
+### python ノートブックで確認したい方
+
+次のノートブックをご確認ください。
+
+#### [contract_lookup_agent.ipynb](../autogen-multiagent/autogen-multiagent.ipynb)
+
+
+### ひとつひとつ手元でコーディングをしたい方
+
+これ以降の
+- [AutoGen でのマルチエージェント実装(前編)](ex3.md)
+- [AutoGen でのマルチエージェント実装(後編)](ex4.md)
+の手順を実施してください。
+
+#### 作業用フォルダの作成
+
 1. ```mkdir multi-agent``` でmulti-agent フォルダを作成します。
 2. ターミナルで ```cd multi-agent``` を実行し、ディレクトリを移動します。
 3. **（重要）これ以降の手順は全て `multi-agent` ディレクトリ内で作業してください。**
-4. 新規ファイルで `contract_lookup_agent.py` を作成します。
-5. 必要なモジュールをインポートする文をファイルの先頭に追加します。これ以降コードをコピペする際は、最下部に足していってください。
 
-```python
-import requests
-import json
-import os
-import asyncio
-from autogen_agentchat.agents import AssistantAgent
-from autogen_core.models import ChatCompletionClient
-```
-6. 次に、Azure AI Agent SDK の際に記述した、契約管理DBを検索する関数を定義します
-
-7. 下記の contract_lookup 関数を追加
-
-※データをハードコードした関数になっていますが、Cosmos DB から取得する関数でも問題ございません。
-
-```python
-def contract_lookup(user_id: int)->str:
-    # 便宜上ハードコードしています。Cosmos DB から取得する関数でも構いません。
-    """
-    ユーザーIDに基づいてユーザー情報を JSON 文字列で返す
-
-    :param user_id (int): ユーザーのID
-    :rtype: int
-
-    :return: JSON 文字列のユーザー情報.
-    :rtype: str
-    """
-    mock_users = {
-        1234: {
-            "name": "佐藤太郎",
-            "tel": "090-0000-0000",
-            "email": "sato@example.com",
-            "staff_email": "xxxxxxxx@microsoft.com",
-            "plan": "安心保障プラン",
-        },
-        5679: {
-            "name": "鈴木花子",
-            "tel": "080-1111-1111",
-            "email": "suzuki@example.com",
-            "staff_email": "xxxxxxxx@microsoft.com",
-            "plan": "学資サポートプラン",
-        },
-        4321: {
-            "name": "田中次郎",
-            "tel": "090-2222-2222",
-            "email": "tanaka@example.com",
-            "staff_email": "xxxxxxxx@microsoft.com",
-            "plan": "シニアライフプラン",
-        }
-    }
-    user_info = mock_users.get(user_id, {"error": "User not found."})
-    return json.dumps({"user_info": user_info})
-```
-
-8. 担当者にメールを送信する send_email 関数についても同様に追加
-```python
-def send_email(customer: str, staff_email: str, inquiry: str) -> str:
-    """
-    お客様から担当者のメールアドレスにお問い合わせがあったことを通知
-
-    :param customer (str): お客様の名前
-    :rtype: str
-
-    :param staff_email (str) : 担当者のメールアドレス
-    :rtype: str
-
-    :param inquiry (str) : 保険に関するお問い合わせ内容
-    :rtype: str
-
-    :return: JSON 文字列のユーザー情報.
-    :rtype: str
-    """
-    headers = {'Content-Type': 'application/json'}
-    payload = {
-        "customer": customer,
-        "inquiry": inquiry,
-        "staff_email": staff_email
-    }
-
-    endpoint_url = os.getenv("LOGIC_APPS")
-
-    try:
-        response = requests.post(endpoint_url, headers=headers, data=json.dumps(payload))
-        response.raise_for_status() 
-        status = json.dumps({"status": "メールで通知が完了しました"})
-        return status
-    except requests.exceptions.RequestException as err:
-        print(f"エラー: {err}")
-        return json.dumps({"status": "メールで通知に失敗しました"})
-```
-9. 次に AutoGen の AssistantAgent クラスで使えるように tools の定義を行います。この記述方法は Azure AI Agent SDK と異なる点です。今回は関数を2つのみ登録していますが、下記のような形に倣って自分で追加することも可能です。
-``` python
-tools = [contract_lookup, send_email]
-```
-10. 最後に AssistantAgent のインスタンスを作成するための関数を定義します。システムメッセージなどは各自で改善していただいて大丈夫です。
-```python
-def contract_lookup_agent(model_client: ChatCompletionClient) -> AssistantAgent:
-    agent = AssistantAgent(
-        name="ContractLookupAgent",
-        description="顧客のデータを確認し、保険の契約状況と担当者を確認するエージェント。さらにユーザーからリクエストがあった場合、ユーザーの担当者に連絡をする。",
-        model_client=model_client,
-        tools = tools,
-        system_message="""丁寧に返してください""",
-    )
-    return agent
-
-```
-
-## 演習 3-2 product_search_agent.py の作成
+## 演習 3-1 product_search_agent.py の作成
 実施するタスクとしては contract_lookup_agent.py と同じ流れです
 1. 新規ファイルで product_search_agent.py を作成してください
 2. 必要なモジュールのインポート
@@ -252,6 +157,120 @@ def product_search_agent(model_client: ChatCompletionClient) -> AssistantAgent:
         system_message="""json形式でかえしてください""",
     )
     return agent
+```
+
+## 演習 3-2 contract_lookup_agent.py の作成
+
+1. 新規ファイルで `contract_lookup_agent.py` を作成します。
+2. 必要なモジュールをインポートする文をファイルの先頭に追加します。これ以降コードをコピペする際は、最下部に足していってください。
+
+
+
+```python
+import requests
+import json
+import os
+import asyncio
+from autogen_agentchat.agents import AssistantAgent
+from autogen_core.models import ChatCompletionClient
+```
+3. 次に、Azure AI Agent SDK の際に記述した、契約管理DBを検索する関数を定義します
+
+4. 下記の contract_lookup 関数を追加
+
+※データをハードコードした関数になっていますが、Cosmos DB から取得する関数でも問題ございません。
+
+```python
+def contract_lookup(user_id: int)->str:
+    # 便宜上ハードコードしています。Cosmos DB から取得する関数でも構いません。
+    """
+    ユーザーIDに基づいてユーザー情報を JSON 文字列で返す
+
+    :param user_id (int): ユーザーのID
+    :rtype: int
+
+    :return: JSON 文字列のユーザー情報.
+    :rtype: str
+    """
+    mock_users = {
+        1234: {
+            "name": "佐藤太郎",
+            "tel": "090-0000-0000",
+            "email": "sato@example.com",
+            "staff_email": "xxxxxxxx@microsoft.com",
+            "plan": "安心保障プラン",
+        },
+        5679: {
+            "name": "鈴木花子",
+            "tel": "080-1111-1111",
+            "email": "suzuki@example.com",
+            "staff_email": "xxxxxxxx@microsoft.com",
+            "plan": "学資サポートプラン",
+        },
+        4321: {
+            "name": "田中次郎",
+            "tel": "090-2222-2222",
+            "email": "tanaka@example.com",
+            "staff_email": "xxxxxxxx@microsoft.com",
+            "plan": "シニアライフプラン",
+        }
+    }
+    user_info = mock_users.get(user_id, {"error": "User not found."})
+    return json.dumps({"user_info": user_info})
+```
+
+5. 担当者にメールを送信する send_email 関数についても同様に追加
+```python
+def send_email(customer: str, staff_email: str, inquiry: str) -> str:
+    """
+    お客様から担当者のメールアドレスにお問い合わせがあったことを通知
+
+    :param customer (str): お客様の名前
+    :rtype: str
+
+    :param staff_email (str) : 担当者のメールアドレス
+    :rtype: str
+
+    :param inquiry (str) : 保険に関するお問い合わせ内容
+    :rtype: str
+
+    :return: JSON 文字列のユーザー情報.
+    :rtype: str
+    """
+    headers = {'Content-Type': 'application/json'}
+    payload = {
+        "customer": customer,
+        "inquiry": inquiry,
+        "staff_email": staff_email
+    }
+
+    endpoint_url = os.getenv("LOGIC_APPS")
+
+    try:
+        response = requests.post(endpoint_url, headers=headers, data=json.dumps(payload))
+        response.raise_for_status() 
+        status = json.dumps({"status": "メールで通知が完了しました"})
+        return status
+    except requests.exceptions.RequestException as err:
+        print(f"エラー: {err}")
+        return json.dumps({"status": "メールで通知に失敗しました"})
+```
+6. 次に AutoGen の AssistantAgent クラスで使えるように tools の定義を行います。この記述方法は Azure AI Agent SDK と異なる点です。今回は関数を2つのみ登録していますが、下記のような形に倣って自分で追加することも可能です。
+``` python
+tools = [contract_lookup, send_email]
+```
+7. 最後に AssistantAgent のインスタンスを作成するための関数を定義します。システムメッセージなどは各自で改善していただいて大丈夫です。
+```python
+def contract_lookup_agent(model_client: ChatCompletionClient) -> AssistantAgent:
+    agent = AssistantAgent(
+        name="ContractLookupAgent",
+        description="顧客のデータを確認し、保険の契約状況と担当者を確認するエージェント。さらにユーザーからリクエストがあった場合、ユーザーの担当者に連絡をする。",
+        model_client=model_client,
+        tools = tools,
+        system_message="""丁寧に返してください""",
+    )
+    return agent
+
 ```
 
 ## 演習 3-3 summary_agent.py の作成

@@ -129,15 +129,18 @@ UIを構築する前に、実行ができるか確認しましょう。
 ```python
 async def clean_console(stream):
     async for message in stream:
-        if hasattr(message, "source") and hasattr(message, "content"):
-            if message.source in [
-                "SummaryAgent",
-                "ProductSearchAgent",
-                "ContractLookupAgent",
-                "PlannerAgent",
-            ]:
-                print(f"\n---------- {message.source} ----------")
-                print(message.content)
+        if isinstance(message, TextMessage):
+            print(
+                f"\n ----------------: {message.source}----------------: \n {message.content}"
+            )
+        elif isinstance(message, ToolCallRequestEvent):
+            print(
+                f"\n ----------------: {message.source}----------------: \n 呼び出すツール: {message.content[0].name} \n パラメータ: {message.content[0].arguments}"
+            )
+        elif isinstance(message, ToolCallExecutionEvent):
+            print(
+                f"\n ----------------: {message.source}----------------: \n ツール呼び出し結果: {message.content[0].content.encode().decode('unicode_escape')} "
+            )
 
 ```
 
