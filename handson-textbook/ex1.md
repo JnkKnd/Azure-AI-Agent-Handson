@@ -24,23 +24,24 @@
 ---
 
 ### 2. サンプルデータを Azure Storage にアップロード
+ここからはサンプルデータを Azure Storage にアップロードする手順を解説します。
 
 手順：
 
-1. Azure Portal を開く。
-2. リソースグループを展開。
+1. Azure Portal を開いてください。
+2. リソースグループを展開してください。
    ![image01-16](../images/image01-16.png)
    
-3. ex.0で Azure AI Foundry Hub を作成したリソースグループを開く。
-4. Azure AI Foundry Hub を作成したときに一緒に作成された Storage Account を開く。
-5. 左のタブの データストレージ を展開し、コンテナー を展開する。
+3. ex.0で Azure AI Foundry Hub を作成したリソースグループを選択してください。
+4. Azure AI Foundry Hub を作成したときに一緒に作成された [Storage Account] を選択してください。
+5. 左のタブの [データストレージ] を展開し、[コンテナー] を展開します。
    ![image01-17](../images/image01-17.png)
    
-6. ＋コンテナ から `sampledata` という名前の Blob コンテナ を作成。
-7. コンテナーに戻り、 `sampledata` を展開する。
+6. ＋コンテナ から `sampledata` という名前の Blob コンテナ を作成します。
+7. コンテナーに戻り、 `sampledata` を展開してください。
    ![image01-18](../images/image01-18.png)
    
-8. アップロードから ファイルの参照を展開。
+8. アップロードから ファイルの参照を展開してください。
    ![image01-19](../images/image01-19.png)
    
 9. 事前にダウンロードした`product_info.md` をにアップロードする。
@@ -51,34 +52,36 @@
 
 ### 3. Azure AI Search の作成
 Azure AI Search からストレージにアクセスするには、RBAC（ロールベースアクセス制御）の手動設定が必要です。
-以下の手順に従って、行ってください：
+まずは以下の手順に従って、Azure AI Search の作成を行ってください：
 
-1. Azure Portal を開き、 Azure AI Search をデプロイする。
+1. Azure Portal を開き、 Azure AI Search をデプロイします。
 
    ![image01-28](../images/image01-28.png)
    
 手順：
- - サービス名は任意の名前にしてください
- - Azure AI Search の価格プランは **Basic** を利用してください　※ベクトル検索を使用するため。
- - リージョンは **Azure AI Foundry Hub** と同一にしてください
+ - サービス名は任意の名前にしてください。
+ - Azure AI Search の価格プランは **Basic** を利用してください。　※ベクトル検索を使用するため。
+ - リージョンは **Azure AI Foundry Hub** と同一にしてください。
 
    ![image01-30](../images/image01-30.png)
    
-2. Azure AI Search のエンドポイントとキーをメモしてください。
+2. Azure AI Search のエンドポイントとキーをメモしてください。※envファイルにて使用します。
 
 AI_SEARCH_ENDPOINT＝ <Azure AI Search のエンドポイント>
+
 AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
+
+エンドポイントとキーの取得手順は以下を参照ください。
 
  手順：
  作成された Azure AI Search を展開してください。
  - エンドポイント：概要 の [URL] 
     ![image01-38](../images/image01-38.png)
- - キー：[設定] を展開。[キー」から [プライマリ管理者キー] をコピー。
+ - キー：[設定] を展開。[キー」から [プライマリ管理者キー] を選択。
     ![image01-39](../images/image01-39.png)
     
 3. RBAC（ロールベースアクセス制御）の手動設定
-
-Azure AI Search からストレージにアクセスするには、以下の設定が必要です：
+ここからはAzure AI Search からストレージにアクセスするために必要になる RBAC（ロールベースアクセス制御）の手動設定 を行います。
 
 対象：**Azure AI Foundry Hub と同時に作成された Storage Account**
 
@@ -200,8 +203,18 @@ Azure AI Search からストレージにアクセスするには、以下の設�
    
 
 8. 「レビューと作成」画面で、「作成」を選択すれば、完了です。
-
    ![image01-34](../images/image01-34.png)
+   
+9. Azure AI Search のインデックス名をメモしてください。※envファイルにて使用します。
+
+INDEX_NAME = <インデックス名>
+
+手順
+- Azure AI Searc のリソースから [検索管理] → [インデックス] を選択します。
+- 今回作成したインデックスの名前を取得できます。
+   ![image01-40](../images/image01-40.png)
+
+
 
 ## 演習 1-2 Grounding with Bing Search の作成  
 
