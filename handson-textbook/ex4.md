@@ -6,9 +6,9 @@
 
 ## 演習 4-1 : app.py の作成
 ### 作成したエージェントをモジュールとしてインポート
-1. agents ディレクトリと同じ階層に app.py を作成してください
+1. `multi-agent` ディレクトリと同じ階層に app.py を新規作成してください
 1. 各種必要な AutoGen のモジュールをインポートします
-1. app.py の先頭に以下を記述してください。これ以降コードをコピペする際は、最下部に追記していってください。
+1. app.py の先頭に以下を記述してください。これ以降コードをコピペする際は、最下部に足していってください。
 ```　python
 import json
 import os
@@ -41,9 +41,9 @@ INDEX_NAME = os.getenv("INDEX_NAME")
 AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
 ```
 
-6. LLM クライアントの定義
-
-※ 今回は AutoGen のバージョンを 0.4.7 に指定しているため、autogen_ext.models.openai モジュールの [AzureOpenAIChatCompletionClient](https://microsoft.github.io/autogen/0.4.7/reference/python/autogen_ext.models.openai.html#autogen_ext.models.openai.AzureOpenAIChatCompletionClient) を使っていますが、執筆時最新の AutoGen 0.5系の場合は [AzureAIChatCompletionClient](https://microsoft.github.io/autogen/stable/reference/python/autogen_ext.models.azure.html#module-autogen_ext.models.azure) を用います。
+6. LLM クライアントの定義\
+※ 今回は AutoGen のバージョンを 0.4.7 に指定しているため、autogen_ext.models.openai モジュールの [AzureOpenAIChatCompletionClient](https://microsoft.github.io/autogen/0.4.7/reference/python/autogen_ext.models.openai.html#autogen_ext.models.openai.AzureOpenAIChatCompletionClient) を使っています。\
+執筆時最新の AutoGen 0.5系の場合は [AzureAIChatCompletionClient](https://microsoft.github.io/autogen/stable/reference/python/autogen_ext.models.azure.html#module-autogen_ext.models.azure) を用います。
 
 ```python
 aoai_client = AzureOpenAIChatCompletionClient(
@@ -55,8 +55,7 @@ aoai_client = AzureOpenAIChatCompletionClient(
 )
 ```
 
-7. Selector Group Chat 作成時のプロンプト指定
-
+7. Selector Group Chat 作成時のプロンプト指定\
 Selector Group Chat 作成時に指定するプロンプトとして以下を定義します。プロンプトには次のようなプレースホルダーを使用することができます：​
 
 |プレースホルダー|説明|
@@ -88,8 +87,7 @@ selector_prompt = """あなたのタスクは、会話の状況に応じて次�
 - タスクを完了するための必要な情報が揃ったと判断したら "SummaryAgent" に最終回答の作成を依頼します。
 ```
 
-8. 各エージェントに、モデルクライアントを引数に渡す
-
+8. 各エージェントに、モデルクライアントを引数に渡す\
 演習3で作成した各エージェントをモジュールとして読み込み、モデルクライアントの定義を引数に渡すことで各エージェントを作成します。
 
 ```python
@@ -223,11 +221,14 @@ async def main(message: cl.Message) -> None:
 
 ```
 
-ここまでで、コーディングは終了です。`chainlit app.py run -w`
-を実行すると、既定では `http://localhost:8000` で UI が表示されます。
+ここまでで、コーディングは終了です。
 
 2. タスクの実行
-
+下記のコマンドで、実行を行います。
+```
+chainlit app.py run -w
+```
+既定では `http://localhost:8000` で UI が表示されます。
 ブラウザ上で `http://localhost:8000` にアクセスし、タスクを入力してみましょう。
 ```
 ユーザーID 1234 の人の加入しているプランを調べ、プランの詳細も調べて教えて
@@ -238,7 +239,7 @@ async def main(message: cl.Message) -> None:
 ![alt text](../images/multiagent.gif) \
 gifが見づらい場合は[こちらの動画](../images/multiagent.mp4)をご覧ください。
 
-ブラウザタブを閉じても、今回の実装の場合はサーバーサイドで非同期処理を実行しているため、コンソール上では処理が続いてしまいます。ターミナルで `Ctrl + C` で終了させてください。
+今回は簡易的な実装のため、ブラウザタブを閉じても、サーバーサイドで非同期処理を実行している関係で、コンソール上では処理が続いてしまいます。完全に終了する場合は、ターミナルで `Ctrl + C` で終了させてください。
 
 <br>
 
