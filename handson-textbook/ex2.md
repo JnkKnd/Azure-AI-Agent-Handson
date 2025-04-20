@@ -156,7 +156,7 @@
 
 ![alt text](../images/image02-19.png)
 
-10. 最後に、[キー] から、Cosmos DB の `URI` と `PRIMARY KEY` をメモしておく（後ほど使用）
+10. 最後に、[設定] の中から [キー] を選択し、Cosmos DB の `URI` と `PRIMARY KEY` をメモしておく（後ほど使用）
 
 ![alt text](../images/image02-27.png)
 
