@@ -162,8 +162,17 @@
 
 「デプロイ」ボタンをクリックするとすぐにデプロイされます。
 
-1. ここで、Azure OpenAI のエンドポイントとキー、メモの
+1. デプロイが完了すると、完了画面が表示されます。ここで、Azure OpenAI のエンドポイントとキーをメモしておきます。
+下記の画像の、ターゲットURIの `https://<hub リソース名>.openai.azure.com` の部分がエンドポイントです。（`openai.azure.com` 以降のURLは不要です）キーも同様にコピーします。
 
+  ![alt text](../images/image011.png)
+
+1. コピーした内容は下記のようにメモ帳にメモしておきます。もしくは`.env`ファイルに追加しても構いません。デプロイ名はデフォルト値の場合 `gpt-4o`です。
+    ```
+    AZURE_OPENAI_ENDPOINT ="コピーしたエンドポイント"
+    AZURE_OPENAI_KEY ="コピーしたキー"
+    DEPLOYMENT_NAME ="gpt-4o"
+    ```
 
 ### Embedding モデルのデプロイ
 `gpt-4o` のデプロイ時と同様に、`text-embedding-ada-002` をデプロイします。このモデルは演習1で、保険商品に関するサンプルデータから Azure AI Search でインデックスを作成する際に必要になります。
