@@ -246,7 +246,6 @@ gifが見づらい場合は[こちらの動画](../images/multiagent.mp4)をご�
 
 <br>
 
-## 演習 4-4 : App Service へのデプロイ（Optional）※準備中
 
 ## 次へ
 
