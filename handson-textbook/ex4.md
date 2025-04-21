@@ -162,14 +162,15 @@ if __name__ == "__main__":
 ![alt text](../images/image41.png)
 
 処理としては次のようなシーケンス図となります。
-```mermaid
+```mermaid 
 sequenceDiagram
 participant selector as Selector
 participant planner as PlanningAgent
-participant agent as AirlineAgent
-participant agent2 as HotelAgent
-participant search as search_flight
-participant search2 as search_hotel
+participant agent as 契約管理エージェント
+participant agent2 as 保険商品案内エージェント
+participant agent3 as 会話要約エージェント
+participant search as ユーザーデータベース
+participant search2 as 保険商品の検索
     activate selector
     selector ->> selector: ①遷移先決定★
     selector ->>+ planner: PlannningAgent 遷移
@@ -180,7 +181,7 @@ participant search2 as search_hotel
     
     activate selector
     selector ->> selector: ③遷移先決定★
-    selector ->>+ agent: AirlineAgent 遷移
+    selector ->>+ agent: 契約管理エージェント 遷移
     deactivate selector
     
     agent ->> agent: ④tool_calls★
@@ -191,7 +192,7 @@ participant search2 as search_hotel
     
     activate selector
     selector ->> selector: ⑤遷移先決定★
-    selector ->>+ agent2: HotelAgent 遷移
+    selector ->>+ agent2: 保険商品案内エージェント 遷移
     deactivate selector
     
     agent2 ->> agent2: ⑥tool_calls★
@@ -204,8 +205,10 @@ participant search2 as search_hotel
     selector ->>+ planner: PlannningAgent 遷移
     deactivate selector
     
-    planner ->> planner: ⑧最終回答作成★
-    planner -->>- selector: 最終回答(BC)
+    activate agent3
+    planner ->> agent3: ⑧最終回答作成★
+    agent3 -->>- planner: result TERMINATE
+    planner -->>- selector: 最終回答と終了判定(BC)
     
 ```
 
