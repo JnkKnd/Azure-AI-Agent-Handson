@@ -37,24 +37,24 @@
 
 ![alt text](../images/image02-05.png)
 
-9. [トリガーの追加] から [Request] を選択し、[When a HTTP is received] を押下
+9. [トリガーの追加] から [Request] を検索し、Request の [When a HTTP is received] を押下
 
 10. [パラメータ] タブで、[Method] を「POST」に選択し、[Request Body JSON Schema] に以下のjsonをコピペ
 
 ```json
 {
-    "type": "object",
-    "properties": {
-        "customer": {
-            "type": "string"
-        },
-        "inquiry": {
-            "type": "string"
-        },
-        "staff_email": {
-            "type": "string"
-        }
-    }
+  "type": "object",
+  "properties": {
+    "customer": {
+      "type": "string"
+    },
+    "inquiry": {
+      "type": "string"
+    },
+    "staff_email": {
+      "type": "string"
+    }
+  }
 }
 ```
 > ※ 完了すると、設定は次の例のようになります。
@@ -71,11 +71,16 @@
 
 13. [サインイン] が求められるので、Microsoft アカウントでサインイン
 
+> ※ （補足）Microsoft アカウントでサインインできない場合は、メール送信ステップを飛ばし、手順 15 に進んでください。
+
 14. [パラメータ] タブで、次の情報を入力
 
 ![alt text](../images/image02-09.png)
 
-15. 入力が終わったら、メールを送信（V2）の後に「＋」ボタンからアクションを追加
+> ※ 以下のように稲妻マークから前の手順のデータを引き継ぐことができます。
+> ![alt text](../images/image02-29.png)
+
+15. 入力が終わったら、「＋」ボタンからアクションを追加
 
 ![alt text](../images/image02-22.png)
 
@@ -90,6 +95,9 @@
 18. [Save] を押下すると、[When a HTTP request is received] の 「HTTP URL」が発行されるためコピーしてメモしておく（後ほど使用）
 
 ![alt text](../images/image02-11.png)
+
+> ※ メール送信を飛ばされた方は、最終的に以下のようになります。
+> ![alt text](../images/image02-30.png)
 
 ## 演習 2-2 Cosmos DB for NoSQL の作成
 1. Azure portal の検索ボックスに「Cosmos DB」と入力し、[Cosmos DB] を選択
