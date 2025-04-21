@@ -11,7 +11,7 @@
   - Visual Studio Code の確認
   - Azure Subscription の確認
   - python version の確認 (3.11 推奨)
-    - 3.11 以下のバージョンをお使いの場合、[Python 3.11.0](https://www.python.org/downloads/release/python-3110/)をダウンロードしてください
+    - 3.11 以下のバージョンをお使いの場合、[Python 3.11.9](https://www.python.org/downloads/release/python-3119/)をダウンロードしてください
     - インストーラー実行の際は 「Add Python 3.11 to PATH」 にチェックを必ず入れてください
 
 
@@ -33,7 +33,7 @@
     ```
     py -3.11 -m venv .venv
     ```
-    3.11 以下のバージョンをお使いの場合、[Python 3.11.0](https://www.python.org/downloads/release/python-3110/)をダウンロードしてください。\
+    3.11 以下のバージョンをお使いの場合、[Python 3.11.9](https://www.python.org/downloads/release/python-3119/)をダウンロードしてください。\
 インストーラー実行の際は 「Add Python 3.11 to PATH」 にチェックを必ず入れてください。
 1. 仮想環境を有効化
     ```
