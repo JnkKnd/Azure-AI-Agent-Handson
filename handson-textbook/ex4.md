@@ -161,6 +161,54 @@ if __name__ == "__main__":
 少し見づらいですが、以下のような最終回答が表示されていればOKです。
 ![alt text](../images/image41.png)
 
+処理としては次のようなシーケンス図となります。
+```mermaid
+sequenceDiagram
+participant selector as Selector
+participant planner as PlanningAgent
+participant agent as AirlineAgent
+participant agent2 as HotelAgent
+participant search as search_flight
+participant search2 as search_hotel
+    activate selector
+    selector ->> selector: ①遷移先決定★
+    selector ->>+ planner: PlannningAgent 遷移
+    deactivate selector
+    
+    planner ->> planner: ②実行計画策定★
+    planner -->>- selector: 実行計画(BC)
+    
+    activate selector
+    selector ->> selector: ③遷移先決定★
+    selector ->>+ agent: AirlineAgent 遷移
+    deactivate selector
+    
+    agent ->> agent: ④tool_calls★
+    agent ->>+ search: 検索API実行
+    search -->>- agent: result
+    #agent ->> agent: 結果を書き換え★<br>(reflect_on_tool_use=True)
+    agent -->>- selector: result(BC)
+    
+    activate selector
+    selector ->> selector: ⑤遷移先決定★
+    selector ->>+ agent2: HotelAgent 遷移
+    deactivate selector
+    
+    agent2 ->> agent2: ⑥tool_calls★
+    agent2 ->>+ search2: 検索API実行
+    search2 -->>- agent2: result
+    agent2-->>- selector: result(BC)
+    
+    activate selector
+    selector ->> selector: ⑦遷移先決定★
+    selector ->>+ planner: PlannningAgent 遷移
+    deactivate selector
+    
+    planner ->> planner: ⑧最終回答作成★
+    planner -->>- selector: 最終回答(BC)
+    
+```
+
 ## 演習4-3 : chainlit による UI 構築
 今回作成する UI は [Chainlit](https://docs.chainlit.io/get-started/overview) を採用しています。python で LLM を用いたチャット UI を手軽に構築できるフレームワークです。
 
