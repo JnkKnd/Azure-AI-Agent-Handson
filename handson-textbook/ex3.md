@@ -131,7 +131,7 @@ def product_search(query: str) -> str:
     results = search_client.search(
         search_text=query,
         query_type="semantic",
-        semantic_configuration_name="insurance-product-info-semantic-configuration",  # セマンティック検索用の構成名（環境に合わせて変更
+        semantic_configuration_name=f"{INDEX_NAME}-semantic-configuration",  # セマンティック検索用の構成名（環境に合わせて変更
         top=3
     )
     context = [nonewlines(doc['chunk']) for doc in results]
