@@ -27,7 +27,7 @@ Semantic Kernel のハンズオンは次の Qiita のリンクにございます
 ![alt text](../images/image52.png)
 
 
-※以下TTBU
+※以下 TBU
 ---
 
 - アクセス制御
