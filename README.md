@@ -26,7 +26,7 @@
 ![alt text](images/image-002.png)
 
 #### 契約管理エージェント
-![alt text](images/image-001.png)
+![alt text](images/image02-01.png)
 
 
 ### マルチエージェントの構成図
@@ -48,3 +48,8 @@
 - Visual Studio Code
 - Azure Subscription (無料版はTPM上限が小さいため非推奨)
 - Github アカウント (任意)
+
+## 次へ
+ハンズオンは以下の演習0から順に行ってください。
+
+👉 [**演習0 : 事前準備とリソースの作成**](ex0.md)
