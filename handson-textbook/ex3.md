@@ -35,7 +35,8 @@ def agent_name(model_client: ChatCompletionClient) -> AssistantAgent:
 - 遷移先の決定: LLM+ルール
 - スレッド: メッセージスレッドを共有
 
-![alt text](../images/image03-1.png)
+![alt text](../images/image03-01.png)
+
 
 AutoGenの他のマルチエージェントデザインパターンについては、[Developers Seminar の YouTube動画](https://youtu.be/vaBspzSug1A) および下記のブログで紹介されています。
 - [AutoGen v0.4 マルチエージェントデザインパターン実装メモ① Selector によるエージェント選択](https://qiita.com/nohanaga/items/164d70e4c50c1ce2cd4c)
@@ -64,7 +65,7 @@ AutoGenの他のマルチエージェントデザインパターンについて�
 
 次のノートブックをご確認ください。
 
-####  📄 [contract_lookup_agent.ipynb](../autogen-multiagent/autogen-multiagent.ipynb)
+####  📄 [autogen_multiagent.ipynb](../autogen-multiagent/autogen-multiagent.ipynb)
 
 
 ### ひとつひとつ手元でコーディングをしたい方
