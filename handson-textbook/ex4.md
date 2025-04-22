@@ -202,14 +202,13 @@ participant search2 as 保険商品の検索
     
     activate selector
     selector ->> selector: ⑦遷移先決定★
-    selector ->>+ planner: PlannningAgent 遷移
     deactivate selector
-    
+
     activate agent3
-    planner ->> agent3: ⑧最終回答作成★
-    agent3 -->>- planner: result TERMINATE
-    planner -->>- selector: 最終回答と終了判定(BC)
-    
+    activate selector
+    selector ->> agent3: ⑧最終回答作成★
+    agent3 -->> selector: result TERMINATE 最終回答と終了判定(BC)
+    deactivate selector
 ```
 
 ## 演習4-3 : chainlit による UI 構築
