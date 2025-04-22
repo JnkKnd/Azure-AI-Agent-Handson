@@ -45,7 +45,7 @@
     ```
     python --version
     ```
-    ここで python 3.11 系が表示されればOKです。
+    ここで python 3.11 以上が表示されればOKです。
 
 1. pip を最新にします
     ```
@@ -61,6 +61,42 @@
     ```
     copy .env-sample .env
     ```
+
+### Github Codespaces を利用する場合
+※ Azure AI Agent SDK の認証でエラーがでる可能性がございます。
+1. Github にご自身のアカウントでサインイン
+
+1. https://github.com/JnkKnd/Azure-AI-Agent-Handson にアクセスし、main ブランチであることを確認
+
+1. Code」ボタンをクリックし、「Codespaces」タブを選択し、「Create Codespace」をクリックします。
+
+1. python 3.11 系が使える状態で、環境が立ち上がります。仮想環境作成や依存関係のインストールを行っていきます。
+
+1. python のバージョン確認
+    ```
+    python --version
+    ```
+
+2. 仮想環境の作成
+    ```
+    python -m venv .venv
+    ```
+
+3. 仮想環境の有効化
+    ```
+    source .venv/bin/activate
+    ```
+
+4. pip の最新化
+    ```
+    python -m pip install --upgrade pip
+    ```
+
+5. 依存関係のインストール
+    ```
+    pip install -r ./requirements.txt
+    ```
+
 
 ### ディレクトリの構造について
 今回のハンズオンのディレクトリ構造は下記の通りです。

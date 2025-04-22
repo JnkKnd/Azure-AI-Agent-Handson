@@ -1,0 +1,11 @@
+{
+  "name": "Python 3.11 Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": ["ms-python.python"]
+    }
+  }
+}
