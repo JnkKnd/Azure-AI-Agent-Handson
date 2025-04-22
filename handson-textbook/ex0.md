@@ -97,30 +97,40 @@
     pip install -r ./requirements.txt
     ```
 
+6. Azure CLI のインストール
+    ```
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+    ```
+
+7. Azure へのログイン
+    ```
+    az login --use-device-code
+    ```
 
 ### ディレクトリの構造について
 今回のハンズオンのディレクトリ構造は下記の通りです。
 ```
 .
-└── Azure-AI-Agent-Handson\
-    ├── autogen-multiagent\
-    │   ├── autogen-multiagent.ipynb 演習3で用いるノートブック\
-    │   └── (略)\
-    ├── handson-textbook\ 
-    │   ├── ex0.md 演習0\
-    │   ├── ex1.md 演習1\
-    │   ├── ex2.md 演習2\
-    │   ├── ex3.md 演習3\
-    │   ├── ex4.md 演習4\
-    │   └── ex5.md 演習5\
-    ├── sampledata\
-    │   ├── users サンプルのユーザーデータが入っているフォルダ\
-    │   ├── code-interpreter-sample コードインタープリターで生成される画像のサンプル\
-    │   └── product_info.md 保険商品のサンプルデータ\
-    ├── single-agent\
-    │   ├── contract_lookup_agents.ipynb 演習2で用いるノートブック\
-    │   └── product_search_agents.ipynb　演習1で用いるノートブック\
-    └── sk-multiagent\
+└── Azure-AI-Agent-Handson
+    ├── autogen-multiagent
+    │   ├── autogen-multiagent.ipynb 演習3で用いるノートブック
+    │   └── (略)
+    ├── handson-textbook
+    │   ├── ex0.md 演習0
+    │   ├── ex1.md 演習1
+    │   ├── ex2.md 演習2
+    │   ├── ex3.md 演習3
+    │   ├── ex4.md 演習4
+    │   └── ex5.md 演習5
+    ├── sampledata
+    │   ├── users サンプルのユーザーデータが入っているフォルダ
+    │   ├── code-interpreter-sample コードインタープリターで生成される画像のサンプル
+    │   └── product_info.md 保険商品のサンプルデータ
+    ├── single-agent
+    │   ├── contract_lookup_agents.ipynb 演習2で用いるノートブック
+    │   └── product_search_agents.ipynb　演習1で用いるノートブック
+    └── sk-multiagent
         └── sk-multiagent.ipynb Semantic Kernel を勉強するノートブック
 ```
 
