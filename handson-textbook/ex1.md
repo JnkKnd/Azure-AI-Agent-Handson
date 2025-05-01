@@ -69,13 +69,13 @@ sampledata ディレクトリにあるマークダウンを用います。
 
    ![image01-30](../images/image01-30.png)
    
-2. Azure AI Search のエンドポイントとキーをメモしてください。`.env`ファイルに直接追記してもOKです。\
+2. Azure AI Search のエンドポイントとキーをメモしてください。`.env`ファイルに直接追記してもOKです。
    ```
    AI_SEARCH_ENDPOINT="Azure AI Search のエンドポイント"
    AI_SEARCH_KEY="Azure AI Search のプライマリキー"
    ```
 
-   エンドポイントとキーの確認方法は、以下を参照ください。
+   エンドポイントとキーの確認方法は、以下を参照ください。\
    確認方法：作成された Azure AI Search を展開してください。
    
    - エンドポイント：概要 の [URL] 
@@ -142,43 +142,7 @@ sampledata ディレクトリにあるマークダウンを用います。
    設定項目：
    - Kind：Azure OpenAI を選択
    - サブスクリプション：本ハンズオンで使用しているサブスクリプションを選択
-   - Azure OpenAI Service：[新しい Azure OpenAI サービスを作成する] を選択
-
-      ![alt text](../images/image01-43.png)
-
-      1. 遷移した画面で、次のように入力します。Azure AI Seach のインデックス作成画面は閉じずに**開いたままにしてください**。
-      
-      | 項目 | 値 |
-      | --- | --- |
-      |リソースグループ|今回作成したリソースグループを選択|
-      |リージョン| West US|
-      |名前| 任意 |
-      |価格レベル| Standard S0|
-
-      1. 入力を追えたら、[次へ]を選択し、その他の設定はデフォルト値のまま進めます。
-      [レビューおよび送信]タブで、確認をしたら[作成]を選択します。\
-      Azure OpenAI リソースがデプロイされるのを待ちます。
-
-      1. デプロイ後、リソースグループに移動すると、新たに作成された Azure OpenAI Service を展開します。[Explore Azure AI Foundry Portal]を選択すると、次のような画面になります。\
-       左上に **Azure AI Foundry | Azure OpenAI Service**とあり、こちらは project とは別の画面です。
-
-      1. 左側の[共有リソース]の[デプロイ]を選択します。
-       
-      1. 左のメニューの下部にある「マイアセット」内の「モデル＋エンドポイント」を選択して「モデルのデプロイ」を選択し、「基本モデルをデプロイする」をクリックします。
-
-      1. `text-embedding-ada-002` のモデルを選択します。以下のようにモデルを選択し「確認」ボタンをクリックします。
-      ![alt text](../images/image08.png)
-
-      1.  デプロイ設定は、デフォルト値のままで構いません。デプロイの種類は「グローバル標準」に設定します。
-      ![alt text](../images/image09.png)
-
-      「デプロイ」ボタンをクリックするとすぐにデプロイされます。
-
-      1.  Embedding モデルがデプロイできたので、Azure AI Search のインデックス作成画面に戻ります。
-
-      1. Azure OpenAI Service 選択画面のリフレッシュボタンを押下し、最新情報を反映させると、この手順で作成した Azure Open AI Service が選択できるので、選択します。
-
-
+   - Azure OpenAI Service： 演習0 で作成した Azure OpenAI リソースを選択
    - モデルデプロイ： `text-embedding-ada-002` を選択
    - 認証の種類：APIキー
    - Azure OpenAI Serviceに接続すると、アカウントに追加料金が発生することを承認します。 をチェックする。
