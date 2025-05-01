@@ -226,7 +226,7 @@ PROJECT_CONNECTION_STRING = <プロジェクトの接続文字列>
 AI_SEARCH_ENDPOINT＝ <Azure AI Search のエンドポイント>
 AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
 INDEX_NAME = <インデックス名>
-BING_CONNECTION_NAME= <Bing 接続名> #(例 agentdev04) 
+BING_CONNECTION_NAME= <Bing 接続名> 
 ```
 
 ここまででリソースの準備ができました。
