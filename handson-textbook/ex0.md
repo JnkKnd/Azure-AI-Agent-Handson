@@ -244,7 +244,7 @@
 ### Azure OpenAI Service の作成と Embedding モデルのデプロイ
 
 >**※注意**\
->この手順は演習1で、 Azure AI Search の **統合されたベクトル化機能** を用いる際に Azure OpenAI Service リソースの embedding モデルが必要となるため行います。一つ前の手順でデプロイした Azure AI Foundry リソース作成時につくられる Azure AI Services とは**別で**、Azure OpenAI リソースを作成します。
+>この手順は演習1で、 Azure AI Search の **データのインポートとベクター化** 機能を用いる際に Azure OpenAI Service リソースの embedding モデルが必要となるため行います。一つ前の手順でデプロイした Azure AI Foundry リソース作成時につくられる Azure AI Services とは**別で**、Azure OpenAI リソースを作成します。
 
 
 1. [Azure portal](https://portal.azure.com/) にアクセスして「リソースの作成」をクリックします。\
