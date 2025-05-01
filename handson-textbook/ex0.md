@@ -21,7 +21,9 @@
 
 1. https://github.com/JnkKnd/Azure-AI-Agent-Handson にアクセスし、main ブランチであることを確認
 
-1. Code」ボタンをクリックし、「Codespaces」タブを選択し、「Create Codespace」をクリックします。
+1. [Code]ボタンをクリックし、[Codespaces]タブを選択し、[Create Codespace]をクリックします。
+
+    ![alt text](../images/image00-1.png)
 
 1. python 3.11 系が使える状態で、環境が立ち上がります。仮想環境作成や依存関係のインストールを行っていきます。
 
@@ -95,6 +97,7 @@
     ```
     python -m venv .venv
     ```
+    で仮想環境を作成してください。
 
 1. 仮想環境を有効化
     ```
@@ -157,6 +160,8 @@
   - Azure AI Foundry Hub
   - Azure AI Foundry Project
     - gpt-4o-2024-08-06 のデプロイ
+  - Azure OpenAI Service
+    - text-embedding-ada-002 のデプロイ
 
 また、演習中に作成するリソースは以下の通りです。
   - Azure AI Search (S0 or Basic)
@@ -236,9 +241,9 @@
     DEPLOYMENT_NAME ="gpt-4o"
     ```
 
-### Azure OpeAI Service の作成と Embedding モデルのデプロイ
+### Azure OpenAI Service の作成と Embedding モデルのデプロイ
 
->※注意\
+>**※注意**\
 >この手順は演習1で、 Azure AI Search の **統合されたベクトル化機能** を用いる際に Azure OpenAI Service リソースの embedding モデルが必要となるため行います。一つ前の手順でデプロイした Azure AI Foundry リソース作成時につくられる Azure AI Services とは**別で**、Azure OpenAI リソースを作成します。
 
 
