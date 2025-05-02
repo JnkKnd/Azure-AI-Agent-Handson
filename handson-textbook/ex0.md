@@ -25,45 +25,39 @@
 
     ![alt text](../images/image00-1.png)
 
-1. python 3.11 系が使える状態で、環境が立ち上がります。仮想環境作成や依存関係のインストールを行っていきます。
+1. python 3.11 系が使える状態で、環境が立ち上がります。Azure CLI も自動でインストールされます。今回は手動で、仮想環境作成や依存関係のインストールを行っていきます。
 
 1. python のバージョン確認
     ```
     python --version
     ```
 
-2. 仮想環境の作成
+1. 仮想環境の作成
     ```
     python -m venv .venv
     ```
 
-3. 仮想環境の有効化
+1. 仮想環境の有効化
     ```
     source .venv/bin/activate
     ```
 
-4. pip の最新化
+1. pip の最新化
     ```
     python -m pip install --upgrade pip
     ```
 
-5. 依存関係のインストール
+1. 依存関係のインストール
     ```
     pip install -r ./requirements.txt
     ```
 
-6. Azure CLI のインストール
-    ```
-    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-    ```
-
-7. Azure へのログイン
+1. Azure へのログイン
     ```
     az login --use-device-code
     ```
 
-8. `.env-sample`をコピーし、同じ階層に `.env`ファイルとして保存
+1. `.env-sample`をコピーし、同じ階層に `.env`ファイルとして保存
     ```
     cp .env-sample .env
     ```
