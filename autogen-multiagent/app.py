@@ -24,10 +24,11 @@ EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL")
 AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
 INDEX_NAME = os.getenv("INDEX_NAME")
 AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
+AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
 
 aoai_client = AzureOpenAIChatCompletionClient(
     azure_deployment=DEPLOYMENT_NAME,
-    model="gpt-4o",
+    model=AZURE_DEPLOYMENT_NAME,
     api_key=AZURE_OPENAI_KEY,
     api_version="2025-01-01-preview",
     azure_endpoint=AZURE_OPENAI_ENDPOINT,

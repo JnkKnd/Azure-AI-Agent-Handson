@@ -222,7 +222,7 @@ sampledata ディレクトリにあるマークダウンを用います。
 📄 [.env-sample](../.env-sample)
 
 ```python
-PROJECT_CONNECTION_STRING = <プロジェクトの接続文字列>
+PROJECT_ENDPOINT = <プロジェクトのエンドポイント>
 AI_SEARCH_ENDPOINT＝ <Azure AI Search のエンドポイント>
 AI_SEARCH_KEY = <Azure AI Search のプライマリキー>
 INDEX_NAME = <インデックス名>

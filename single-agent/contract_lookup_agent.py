@@ -8,13 +8,15 @@ from azure.ai.projects.models import FunctionTool, ToolSet, MessageTextContent
 from azure.ai.projects import AIProjectClient
 
 load_dotenv()
-PROJECT_CONNECTION_STRING = os.getenv("PROJECT_CONNECTION_STRING")
-if not PROJECT_CONNECTION_STRING:
-    raise ValueError("'.env' に PROJECT_CONNECTION_STRING が設定されていません。")
+PROJECT_ENDPOINT = os.getenv("PROJECT_ENDPOINT")
+if not PROJECT_ENDPOINT:
+    raise ValueError("'.env' に PROJECT_ENDPOINT が設定されていません。")
 
 project_client = AIProjectClient.from_connection_string(
-    credential=DefaultAzureCredential(), conn_str=PROJECT_CONNECTION_STRING
+    credential=DefaultAzureCredential(), conn_str=PROJECT_ENDPOINT
 )
+
+AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
 
 def contract_lookup(user_id: int) -> str:
     # 便宜上一旦ハードコードしています
@@ -95,7 +97,7 @@ toolset = ToolSet()
 toolset.add(functions)
 
 agent = project_client.agents.create_agent(
-    model="gpt-4o",
+    model=AZURE_DEPLOYMENT_NAME,
     name="Contract Lookup Agent",
     instructions="""
 あなたは、丁寧なアシスタントです。あなたは以下の業務を遂行します。
