@@ -18,7 +18,6 @@ param aiModelDeploymentName string = 'gpt-4.1-mini'
 param aiSearchName string
 param blobStorageName string
 param logicAppName string
-param bingSearchName string
 
 // Azure OpenAI
 param azureOpenAIName string
@@ -237,22 +236,6 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   }
 }
 
-// ===== Grounding with Bing Search =====
-resource bingSearch 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
-  name: bingSearchName
-  location: location
-  sku: {
-    name: 'S1'
-  }
-  kind: 'Bing.Search.v7'
-  properties: {
-    apiProperties: {
-      statisticsEnabled: false
-    }
-    publicNetworkAccess: 'Enabled'
-  }
-}
-
 // ===== 出力 =====
 output pgServerFqdn string = pgServer.properties.fullyQualifiedDomainName
 output cosmosAccountEndpoint string = cosmosAccount.properties.documentEndpoint
@@ -270,4 +253,3 @@ output aiSearchEndpoint string = 'https://${aiSearch.name}.search.windows.net'
 output blobStorageName string = blobStorage.name
 output blobStorageEndpoint string = blobStorage.properties.primaryEndpoints.blob
 output logicAppName string = logicApp.name
-output bingSearchName string = bingSearch.name

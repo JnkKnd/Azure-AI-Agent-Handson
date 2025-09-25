@@ -32,7 +32,7 @@ EMBEDDING_MODEL_NAME="text-embedding-ada-002"
 BLOB_STORAGE_NAME="blob$RANDOM_INT"
 AI_SEARCH_NAME="aisearch-$RANDOM_INT"
 LOGIC_APP_NAME="logicapp-$RANDOM_INT"
-BING_SEARCH_NAME="bingsearch-$RANDOM_INT"
+
 # ==== リソースグループ作成 ====
 az group create --name $RESOURCE_GROUP_NAME --location $LOCATION
 
@@ -60,7 +60,6 @@ az deployment group create \
       aiSearchName=$AI_SEARCH_NAME \
       blobStorageName=$BLOB_STORAGE_NAME \
       logicAppName=$LOGIC_APP_NAME \
-      bingSearchName=$BING_SEARCH_NAME \
   --no-prompt --debug
 
 # ==== DB 接続情報取得 ====
@@ -112,7 +111,6 @@ echo "AZURE_OPENAI_ENDPOINT: $AZURE_OPENAI_ENDPOINT"
 echo "AZURE_OPENAI_KEY: $AZURE_OPENAI_KEY"
 echo "EMBEDDING_MODEL_NAME: $EMBEDDING_MODEL_NAME"
 echo "LOGIC_APP_NAME: $LOGIC_APP_NAME"
-echo "BING_SEARCH_NAME: $BING_SEARCH_NAME"
 
 # ==== .env ファイル作成と更新 ====
 # .env ファイルの作成
