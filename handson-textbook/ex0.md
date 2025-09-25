@@ -7,13 +7,6 @@
 5. [マルチエージェントの実装における考慮点](ex5.md)
 
 ## 演習 0-1 : 開発環境の確認
-### 必要事項
-  - Azure Subscription の確認
-  - ローカルで実行する場合：
-    - Visual Studio Code の確認
-    - python version の確認 (3.11 以上推奨)
-      - 3.11 以下のバージョンをお使いの場合、[Python 3.11.9](https://www.python.org/downloads/release/python-3119/)をダウンロードしてください
-      - インストーラー実行の際は 「Add Python 3.11 to PATH」 にチェックを必ず入れてください
 
 ## Github Codespaces を利用する場合
 ### 1.1 リポジトリへのアクセス
@@ -177,6 +170,13 @@ pip install --upgrade -r requirements.txt
 ## ローカルで実施する場合
 ※ 下記は Windows Powershell の場合の例です。コマンドは環境に応じて適宜読みかえてください。
 
+### 必要事項
+  - Azure Subscription の確認
+  - ローカルで実行する場合：
+    - Visual Studio Code の確認
+    - python version の確認 (3.11 以上推奨)
+      - 3.11 以下のバージョンをお使いの場合、[Python 3.11.9](https://www.python.org/downloads/release/python-3119/)をダウンロードしてください
+      - インストーラー実行の際は 「Add Python 3.11 to PATH」 にチェックを必ず入れてください
 
 1. リポジトリをクローン
     [git](https://git-scm.com/downloads/win) がインストールされている方：
