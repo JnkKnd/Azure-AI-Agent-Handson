@@ -280,7 +280,7 @@ async def main(message: cl.Message) -> None:
 2. タスクの実行
 下記のコマンドで、実行を行います。
 ```
-chainlit app.py run -w
+chainlit run app.py -w
 ```
 既定では `http://localhost:8000` で UI が表示されます。
 ブラウザ上で `http://localhost:8000` にアクセスし、タスクを入力してみましょう。

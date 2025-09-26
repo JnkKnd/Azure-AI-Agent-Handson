@@ -1,6 +1,6 @@
 azure-identity==1.23.1
 azure-ai-projects==1.0.0b12
-azure-ai-agents==1.1.0b4  # MCPTool 対応バージョン
+azure-ai-agents==1.1.0b4  # MCPTool 対応バージョン,1.0.0b8から変更
 azure-search-documents==11.5.2
 azure-cosmos==4.9.0
 azure-mgmt-resource==24.0.0
