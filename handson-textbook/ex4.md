@@ -35,10 +35,11 @@ from agents.planner_agent import planner_agent
 load_dotenv()
 AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-DEPLOYMENT_NAME = os.getenv("DEPLOYMENT_NAME")
+AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
 AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
 INDEX_NAME = os.getenv("INDEX_NAME")
 AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
+AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
 ```
 
 6. LLM クライアントの定義\
@@ -47,8 +48,8 @@ AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
 
 ```python
 aoai_client = AzureOpenAIChatCompletionClient(
-    azure_deployment=DEPLOYMENT_NAME,
-    model="gpt-4o",
+    azure_deployment=AZURE_DEPLOYMENT_NAME,
+    model=AZURE_DEPLOYMENT_NAME,
     api_key=AZURE_OPENAI_KEY,
     api_version="2025-01-01-preview",
     azure_endpoint=AZURE_OPENAI_ENDPOINT,
@@ -279,7 +280,7 @@ async def main(message: cl.Message) -> None:
 2. タスクの実行
 下記のコマンドで、実行を行います。
 ```
-chainlit app.py run -w
+chainlit run app.py -w
 ```
 既定では `http://localhost:8000` で UI が表示されます。
 ブラウザ上で `http://localhost:8000` にアクセスし、タスクを入力してみましょう。

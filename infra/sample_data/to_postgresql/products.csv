@@ -1,0 +1,18 @@
+﻿product_id,product_name,category_id,price
+1,Surface Pro,1,180000
+2,Surface Laptop,1,170000
+3,Surface Go,1,90000
+4,Surface Dock,4,35000
+5,Surface ペン,4,16000
+6,Arc Mouse,4,11000
+7,Surface Mouse,4,9000
+8,Modern Webcam,4,13000
+9,Surface Earbuds,4,25000
+10,Type Cover,4,20000
+11,Office,3,38000
+12,Microsoft 365,3,16000
+13,USB-C トラベルハブ,4,11000
+14,USB-C Charger,4,6000
+15,Xbox Game Pass,2,1500
+16,Xbox コントローラー,4,8000
+17,Surface スリム ペン,4,18000

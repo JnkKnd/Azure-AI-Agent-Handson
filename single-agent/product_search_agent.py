@@ -21,12 +21,13 @@ AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
 INDEX_NAME = os.getenv("INDEX_NAME")
 AI_SEARCH_KEY = os.getenv("AI_SEARCH_KEY")
 
-PROJECT_CONNECTION_STRING = os.getenv("PROJECT_CONNECTION_STRING")
+PROJECT_ENDPOINT = os.getenv("PROJECT_ENDPOINT")
 BING_CONNECTION_NAME = os.getenv("BING_CONNECTION_NAME")
+AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
 
 project_client = AIProjectClient.from_connection_string(
     credential=DefaultAzureCredential(),
-    conn_str=os.environ["PROJECT_CONNECTION_STRING"],
+    conn_str=os.environ["PROJECT_ENDPOINT"],
 )
 
 bing_connection = project_client.connections.get(connection_name=BING_CONNECTION_NAME)
@@ -78,7 +79,7 @@ toolset.add(functions)
 toolset.add(bing)
 
 agent = project_client.agents.create_agent(
-    model="gpt-4o",
+    model=AZURE_DEPLOYMENT_NAME,
     name="Product Search Agent",
     instructions="""
 あなたは、丁寧なアシスタントです。あなたは以下の業務を遂行します。

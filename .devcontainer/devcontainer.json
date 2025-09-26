@@ -1,11 +1,21 @@
 {
   "name": "Python 3.11 Dev Container",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
-  "features": {},
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {}, //  Azure CLI
+    "ghcr.io/itsmechlark/features/postgresql:1": {}, //  psql
+    "ghcr.io/devcontainers/features/node:1": {"version": "22"} // Node.js
+  },
   "customizations": {
     "vscode": {
       "settings": {},
-      "extensions": ["ms-python.python"]
+      "extensions": [
+        "ms-python.python", 
+        "ms-toolsai.jupyter", 
+        "ms-azuretools.vscode-bicep",
+        "mathematic.vscode-pdf",
+        "george-alisson.html-preview-vscode"
+      ]
     }
   }
 }

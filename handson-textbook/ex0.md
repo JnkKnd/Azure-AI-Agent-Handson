@@ -7,6 +7,169 @@
 5. [マルチエージェントの実装における考慮点](ex5.md)
 
 ## 演習 0-1 : 開発環境の確認
+
+## Github Codespaces を利用する場合
+### 1.1 リポジトリへのアクセス
+
+1. [Azure-AI-Agent-Handson](https://github.com/JnkKnd/Azure-AI-Agent-Handson) にアクセス
+2. `20250929` ブランチであることを確認
+
+### 1.2 Codespaces の起動
+
+1. **[Code]** ボタンをクリック
+2. **[Codespaces]** タブを選択  
+3. **[Create Codespace]** をクリック
+
+    > **自動設定**: Python 3.11系とすべての必要ツールが自動でインストールされます
+
+### 1.3 環境の確認
+
+ターミナルを開いて、必要なツールがインストールされていることを確認：
+
+```bash
+# Python バージョン確認
+python --version
+
+# PostgreSQL クライアント確認  
+psql --version
+
+# Azure CLI 確認
+az --version
+```
+
+> **期待される結果**: すべてのコマンドでバージョン情報が表示される
+
+## Step 2: Azure インフラストラクチャの構築
+
+### 2.1 Azure アカウントへのログイン
+
+```bash
+az login --use-device-code
+```
+
+> **認証プロセス**: ブラウザで表示されるコードを入力してAzureアカウントにログイン
+
+### 2.2 Python 依存関係のインストール
+
+ワークショップに必要なライブラリをCodespaces環境にインストール：
+
+```bash
+pip install -r ./requirements.txt
+```
+
+> **インストール内容**: Azure AI SDK、Semantic Kernel、データベースクライアントなど
+
+### 2.3 Azure リソースの自動作成
+
+以下のコマンドで必要なAzureリソースを一括作成：
+
+```bash
+bash ./infra/init_setup.sh
+```
+
+#### 作成されるリソース
+
+| リソース | 用途 | 詳細 |
+|---------|------|------|
+| **Azure AI Foundry** | AIモデル管理 | プロジェクト基盤 |
+| **Azure AI Foundry Project** | エージェント開発 | GPT-4.1-miniモデル含む |
+| **Azure Database for PostgreSQL** | 構造化データ | SQLクエリ学習用 |
+| **Azure Cosmos DB for NoSQL** | 非構造化データ | NoSQLクエリ学習用 |
+
+> **注意**: Azure OpenAI モデルのTPM（Tokens Per Minute）クォータ制限に注意してください
+
+### 2.4 リソース作成の確認
+
+1. [Azure Portal](https://portal.azure.com/) にアクセス
+2. 「**リソース グループ**」で検索
+3. 作成されたリソースグループを確認
+
+    ![作成されたリソース](./docs/img/image-00-02.png)
+
+## Step 3: 環境変数の設定
+
+作成したAzureリソースの接続情報を環境変数ファイル（`.env`）に設定します。
+
+### 3.1 Azure AI Foundry 接続情報
+
+1. [Azure AI Foundry Portal](https://ai.azure.com/?cid=learnDocs) にアクセス
+2. **[ライブラリ]** > **[Azure AI Foundry]** を選択
+3. **Azure AI Foundry プロジェクト エンドポイント** をコピー
+4. `.env` ファイルの `PROJECT_ENDPOINT` に設定
+
+> **権限エラーの場合**: Azure AI ユーザー ロールが未割り当ての場合、アラートの **[修正]** ボタンで自動権限付与
+
+![権限設定画面](./docs/img/image-00-03.png)
+
+### 3.2 Azure OpenAI 接続情報
+
+1. **[モデル + エンドポイント]** > **[gpt-4.1-mini]** を選択
+2. **ターゲット URI** → `.env` の `AZURE_OPENAI_ENDPOINT` に設定
+3. **キー** → `.env` の `AZURE_OPENAI_KEY` に設定
+
+![Azure OpenAI設定画面](./docs/img/image-00-04.png)
+
+## Step 4: MCP サーバーの起動
+
+Model Context Protocol（MCP）サーバーを起動して、エージェント間の通信を有効にします。
+
+### 4.1 MCP サーバーの起動
+
+新しいターミナルウィンドウで以下のコマンドを実行：
+
+```bash
+python .\infra\backend_services\mcp_server.py
+```
+
+> **重要**: このターミナルは閉じないでください。MCPサーバーが継続実行される必要があります。
+
+> **ヒント**: 新しい作業用ターミナルを別途開いてください。
+
+### 4.2 MCP サーバーの動作確認（オプション）
+
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) を使用してWeb UIでサーバーの動作を確認できます：
+
+```bash
+# 新しいターミナルタブで実行
+npx @modelcontextprotocol/inspector
+```
+
+> **結果**: ローカルホストにWeb UIが起動し、MCPサーバーの状態を確認可能
+
+
+### 次のステップ
+
+セットアップが完了したら、学習を開始しましょう：
+
+1. **[README.md](./README.md)** で学習コンテンツを確認
+2. **Azure AI Foundry Agent Service** から始める（推奨）
+3. **Semantic Kernel** で高度な機能を学習
+
+## トラブルシューティング
+
+### よくある問題と解決方法
+
+#### Azure OpenAI クォータエラー
+```
+Error: TPM (Tokens Per Minute) quota exceeded
+```
+**解決策**: [Azure Portal](https://portal.azure.com) でクォータ設定を確認・増加申請
+
+#### 環境変数エラー
+```
+Error: Environment variable not found
+```
+**解決策**: `.env` ファイルの設定を再確認し、すべての必須項目が設定されているか確認
+
+#### Python依存関係エラー
+```bash
+# 依存関係を再インストール
+pip install --upgrade -r requirements.txt
+```
+
+## ローカルで実施する場合
+※ 下記は Windows Powershell の場合の例です。コマンドは環境に応じて適宜読みかえてください。
+
 ### 必要事項
   - Azure Subscription の確認
   - ローカルで実行する場合：
@@ -14,63 +177,6 @@
     - python version の確認 (3.11 以上推奨)
       - 3.11 以下のバージョンをお使いの場合、[Python 3.11.9](https://www.python.org/downloads/release/python-3119/)をダウンロードしてください
       - インストーラー実行の際は 「Add Python 3.11 to PATH」 にチェックを必ず入れてください
-
-### Github Codespaces を利用する場合
-※ Azure AI Agent SDK の認証でエラーがでる可能性がございます。
-1. Github にご自身のアカウントでサインイン
-
-1. https://github.com/JnkKnd/Azure-AI-Agent-Handson にアクセスし、main ブランチであることを確認
-
-1. [Code]ボタンをクリックし、[Codespaces]タブを選択し、[Create Codespace]をクリックします。
-
-    ![alt text](../images/image00-1.png)
-
-1. python 3.11 系が使える状態で、環境が立ち上がります。仮想環境作成や依存関係のインストールを行っていきます。
-
-1. python のバージョン確認
-    ```
-    python --version
-    ```
-
-2. 仮想環境の作成
-    ```
-    python -m venv .venv
-    ```
-
-3. 仮想環境の有効化
-    ```
-    source .venv/bin/activate
-    ```
-
-4. pip の最新化
-    ```
-    python -m pip install --upgrade pip
-    ```
-
-5. 依存関係のインストール
-    ```
-    pip install -r ./requirements.txt
-    ```
-
-6. Azure CLI のインストール
-    ```
-    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-    ```
-
-7. Azure へのログイン
-    ```
-    az login --use-device-code
-    ```
-
-8. `.env-sample`をコピーし、同じ階層に `.env`ファイルとして保存
-    ```
-    cp .env-sample .env
-    ```
-
-### ローカルで実施する場合
-※ 下記は Windows Powershell の場合の例です。コマンドは環境に応じて適宜読みかえてください。
-
 
 1. リポジトリをクローン
     [git](https://git-scm.com/downloads/win) がインストールされている方：
@@ -159,7 +265,7 @@
 - リソースの作成
   - Azure AI Foundry Hub
   - Azure AI Foundry Project
-    - gpt-4o-2024-08-06 のデプロイ
+    - gpt-4.1-mini-2025-04-14 のデプロイ
   - Azure OpenAI Service
     - text-embedding-ada-002 のデプロイ
 
@@ -209,19 +315,19 @@
   UI が異なる場合がございますが、ハブの欄に先ほど作成した Azure AI Foundry Hub リソースが作成されていればOKです。
   ![alt text](../images/image05.png)
 
-1. プロジェクトが作成されます。これでプロジェクトごとにエージェントを構築・管理できるようになります。ここで、後続の手順のために、プロジェクトの接続文字列をメモしておきます。プロジェクトの概要欄にある、接続文字列をコピーします。
+1. プロジェクトが作成されます。これでプロジェクトごとにエージェントを構築・管理できるようになります。ここで、後続の手順のために、プロジェクトのエンドポイントをメモしておきます。プロジェクトの概要欄にある、エンドポイントをコピーします。
   ![alt text](../images/image010.png)
 
 1. メモ帳などにメモをしておくか、 `.env`ファイルに直接追記してもOKです。
     ```
-    PROJECT_CONNECTION_STRING="コピーした接続文字列"
+    PROJECT_ENDPOINT="コピーしたエンドポイント"
     ```
 
 
-### GPT-4o モデルのデプロイ
+### GPT-4.1-mini モデルのデプロイ
 1. Azure AI Foundry Portal の左メニューの下部にある[マイアセット]内の[モデル＋エンドポイント]を選択して[モデルのデプロイ]を選択し、[基本モデルをデプロイする]をクリックします。
 
-1. 今回は `gpt-4o` のモデルバージョン `2024-08-06` を使用します。（Grounding with Bing に対応しているモデルのため ）以下のようにモデルを選択し「確認」ボタンをクリックします。\
+1. 今回は `gpt-4.1-mini` のモデルバージョン `2025-04-14` を使用します。（Grounding with Bing に対応しているモデルのため ）以下のようにモデルを選択し「確認」ボタンをクリックします。\
   ![alt text](../images/image06.png)
 
 1.  以下のようにデプロイ設定を行います。デプロイの種類は「グローバル標準」に設定します。特に同一リージョン内に他の Azure OpenAI リソースがある場合はクォータキャップに注意してください。 「デプロイの詳細」の右上にある「カスタマイズ」を選択し、モデルバージョンを 「2024-08-06」に指定してください。また「1分あたりのトークン数レート制限」の値が小さい場合は引き上げてください。50K程度あれば十分です。
@@ -234,11 +340,11 @@
 
     ![alt text](../images/image011.png)
 
-1. コピーした内容は下記のようにメモ帳にメモしておきます。もしくは`.env`ファイルに追加しても構いません。デプロイ名はデフォルト値の場合 `gpt-4o`です。
+1. コピーした内容は下記のようにメモ帳にメモしておきます。もしくは`.env`ファイルに追加しても構いません。デプロイ名はデフォルト値の場合 `gpt-4.1-mini`です。
     ```
     AZURE_OPENAI_ENDPOINT ="コピーしたエンドポイント"
     AZURE_OPENAI_KEY ="コピーしたキー"
-    DEPLOYMENT_NAME ="gpt-4o"
+
     ```
 
 ### Azure OpenAI Service の作成と Embedding モデルのデプロイ
