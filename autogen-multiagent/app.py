@@ -19,16 +19,14 @@ from planner_agent import planner_agent
 load_dotenv()
 AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-DEPLOYMENT_NAME = os.getenv("DEPLOYMENT_NAME")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL")
 AI_SEARCH_ENDPOINT = os.getenv("AI_SEARCH_ENDPOINT")
 INDEX_NAME = os.getenv("INDEX_NAME")
 AI_SEARCH_CRED = os.getenv("AI_SEARCH_CRED")
-AZURE_DEPLOYMENT_NAME = os.getenv("AZURE_DEPLOYMENT_NAME")
 
 aoai_client = AzureOpenAIChatCompletionClient(
-    azure_deployment=DEPLOYMENT_NAME,
-    model=AZURE_DEPLOYMENT_NAME,
+    azure_deployment="gpt-4o",
+    model="gpt-4o",
     api_key=AZURE_OPENAI_KEY,
     api_version="2025-01-01-preview",
     azure_endpoint=AZURE_OPENAI_ENDPOINT,
