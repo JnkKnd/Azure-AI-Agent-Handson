@@ -63,10 +63,12 @@ az deployment group create \
   --no-prompt --debug
 
 # ==== DB 接続情報取得 ====
-PG_HOST=$(az postgres flexible-server show \
-  --name "$PG_SERVER_NAME" \
+# PostgreSQL Flexible Server のFQDNを取得（REST API経由）
+PG_HOST=$(az resource show \
   --resource-group "$RESOURCE_GROUP_NAME" \
-  --query "fullyQualifiedDomainName" -o tsv)
+  --name "$PG_SERVER_NAME" \
+  --resource-type "Microsoft.DBforPostgreSQL/flexibleServers" \
+  --query "properties.fullyQualifiedDomainName" -o tsv)
 
 COSMOS_KEY=$(az cosmosdb keys list \
   --name $COSMOS_ACCOUNT_NAME \
